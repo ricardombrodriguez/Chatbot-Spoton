@@ -1,5 +1,7 @@
 from django.db import models
 
+"""
+
 # Create your models here.
 class Airport(models.Model):
     
@@ -39,7 +41,7 @@ class Departure(models.Model):
     scheduled = models.CharField()
     estimated = models.CharField()
     
-    """
+
     "airport": "Qingdao",
     "timezone": "Asia/Shanghai",
     "iata": "TAO",
@@ -52,7 +54,7 @@ class Departure(models.Model):
     "actual": null,
     "estimated_runway": null,
     "actual_runway": null 
-    """
+
     
     
 
@@ -89,7 +91,7 @@ class Airline(models.Model):
     date_founded = models.CharField()
     
     
-    """ 
+  
     "id": "7",
     "fleet_average_age": "11.1",
     "airline_id": "7",
@@ -105,7 +107,7 @@ class Airline(models.Model):
     "fleet_size": "382",
     "status": "active",
     "type": "scheduled" 
-    """
+ 
 
 class City(models.Model):
     
@@ -119,7 +121,7 @@ class City(models.Model):
     iata_code = models.CharField()
     country_iso2 = models.CharField()
     
-    """ 
+  
     "id": "1",
     "gmt": "-10",
     "city_id": "1",
@@ -130,7 +132,7 @@ class City(models.Model):
     "longitude": "-145.41667",
     "city_name": "Anaa",
     "timezone": "Pacific/Tahiti" 
-    """
+    
 
 class Country(models.Model):
     ico24 = models.CharField()
@@ -145,7 +147,7 @@ class Country(models.Model):
     phone_prefix = models.CharField(nullable=True)
     population = models.CharField(nullable=True)
     
-    """  
+    
     "id": "1",
     "capital": "Andorra la Vella",
     "currency_code": "EUR",
@@ -159,7 +161,7 @@ class Country(models.Model):
     "country_iso_numeric": "20",
     "phone_prefix": "376",
     "population": "84000" 
-    """
+    
 
 class Airplane(models.Model):
     ico24 = models.CharField()
@@ -181,7 +183,7 @@ class Airplane(models.Model):
     plane_status = models.CharField()
     production_line = models.CharField()
     
-    """ 
+    
       "id": "1",
       "iata_type": "B737-300",
       "airplane_id": "1",
@@ -207,7 +209,7 @@ class Airplane(models.Model):
       "plane_status": "active",
       "production_line": "Boeing 737 Classic",
       "registration_date": "0000-00-00",
-      "rollout_date": null """
+      "rollout_date": null 
 
 class Codeshared(models.Model):
         
@@ -237,3 +239,4 @@ class Question(models.Model):
     
 class Answer(models.Model):
     pass
+"""
