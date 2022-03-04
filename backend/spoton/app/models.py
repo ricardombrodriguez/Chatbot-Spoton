@@ -176,7 +176,7 @@ class Airplane(models.Model):
     construction_number = int( models.CharField() )
     registration_number = models.CharField()
     
-    plane_owner = models.CharField()
+    plane_owner = models.CharField(nullable=True)
     plane_series = int( models.CharField() )
     plane_status = models.CharField()
     production_line = models.CharField()
