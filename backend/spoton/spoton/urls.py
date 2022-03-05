@@ -18,12 +18,14 @@ from django.urls import path
 from app import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('/', views.main_page),
-    path('/flights', views.get_flights),
-    path('/flight', views.get_flight),
-    path('/airports', views.get_airports),
-    path('/aiport', views.get_airport),
-    path('/flight/<int:id>', views.get_flights_by_airport),
-    path('/flight/cheap/<int:id>', views.get_flights_by_airport_cheap)
+    #path('admin/', admin.site.urls),
+    #path('/', views.main_page),
+    path('flights', views.get_flights),
+    path('flight', views.get_flight),
+    path('city', views.get_city),
+    path('flights_by_ArrivalCity', views.get_flights_by_ArrivalCity),
+    #path('/airports', views.get_airports),
+    #path('/aiport', views.get_airport),
+    #path('/flight/<int:id>', views.get_flights_by_airport),
+    #path('/flight/cheap/<int:id>', views.get_flights_by_airport_cheap)
 ]

@@ -2,66 +2,71 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
+import requests
+from django.http import HttpResponse
 
+import json
 
 # Create your views here.
-"""get_fligths:
 
-    request api (/flights)
+key = "7dff77adf49dbf87535842af0ca96b20"
 
+BASE_URL = 'http://api.aviationstack.com/v1/'
 
-"""
+# get all flights
 
-class NLP( message):
+@api_view(['GET'])
+def get_flights(request):
     
-    from nltk.tokenize import RegexpTokenizer
-from nltk.stem.wordnet import WordNetLemmatizer
+    url = BASE_URL + 'flights?access_key='+ key
 
-'''
-Since the dataset is small, using NLTK stop words stripped it off many words that were important for this context 
-So I wrote a small script to get words and their frequencies in the whole document, and manually selected 
-inconsequential words to make this list 
-'''
+    resp = requests.get(url=url)
+    data = resp.json()
+    print(data)
 
-stop_words = ['the', 'you', 'i', 'are', 'is', 'a', 'me', 'to', 'can', 'this', 'your', 'have', 'any', 'of', 'we', 'very',
-              'could', 'please', 'it', 'with', 'here', 'if', 'my', 'am']
+    return HttpResponse("Hello, world. You're at the polls index.")
 
 
-def lemmatize_sentence(tokens):
-    lemmatizer = WordNetLemmatizer()
-    lemmatized_tokens = [lemmatizer.lemmatize(word) for word in tokens]
-    return lemmatized_tokens
+@api_view(['GET'])
+def get_flight(request,flight_id):
+    
+    url = BASE_URL + 'flights?access_key='+ key
 
+    resp = requests.get(url=url)
+    data = resp.json()
 
-def tokenize_and_remove_punctuation(sentence):
-    tokenizer = RegexpTokenizer(r'\w+')
-    tokens = tokenizer.tokenize(sentence)
-    return tokens
+    return Response(data)
 
+@api_view(['GET'])
+def get_flights_by_ArrivalCity(request):
+    
+    # ALTERAR AQUI
+    arrivalCity = "Porto"
+    
+    with open('cities.json') as json_file:
+        data = json.load(json_file)
+        
+    all_cities = data['data']
+    
+    cities = { city['city_name'] : city['iata_code'] for city in all_cities }
+    
+    iata_code = cities[arrivalCity]
 
-def remove_stopwords(word_tokens):
-    filtered_tokens = []
-    for w in word_tokens:
-        if w not in stop_words:
-            filtered_tokens.append(w)
-    return filtered_tokens
+    url = BASE_URL + 'flights?access_key='+ key +'&arr_iata='+ iata_code
 
+    resp = requests.get(url=url)
+    data = resp.json()
 
-'''
-Convert to lower case,
-remove punctuation
-lemmatize
-'''
+    return Response(data)
 
+@api_view(['GET'])
+def get_city(request):
+    
+    url = BASE_URL + 'cities?access_key='+ key
 
-def preprocess_main(sent):
-    sent = sent.lower()
-    tokens = tokenize_and_remove_punctuation(sent)
-    lemmatized_tokens = lemmatize_sentence(tokens)
-    orig = lemmatized_tokens
-    filtered_tokens = remove_stopwords(lemmatized_tokens)
-    if len(filtered_tokens) == 0:
-        # if stop word removal removes everything, don't do it
-        filtered_tokens = orig
-    normalized_sent = " ".join(filtered_tokens)
-    return normalized_sent
+    resp = requests.get(url=url)
+    data = resp.json()
+
+    return Response(data)
+
+    
