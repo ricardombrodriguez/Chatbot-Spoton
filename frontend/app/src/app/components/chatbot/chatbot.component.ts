@@ -3,6 +3,7 @@ import { Booking } from 'src/app/classes/booking';
 import { Message } from 'src/app/classes/message';
 import { ChatbotService } from 'src/app/services/chatbot.service';
 import { UserService } from 'src/app/services/user.service';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -18,11 +19,16 @@ export class ChatbotComponent implements OnInit {
   startPage!: number;
   paginationLimit!: number;
 
-  constructor(private chatbotService : ChatbotService, private userService : UserService) { }
+  public lat:any;
+  public lng:any;
+  public coords:any;
+
+  constructor(private chatbotService : ChatbotService, private userService : UserService, private locationService: LocationService) { }
 
   ngOnInit(): void {
 
     // get user message and booking history
+    this.getLocation()
 
     this.userService.getUserMessages().subscribe((messages) => {
       this.conversations = messages;
@@ -90,6 +96,23 @@ export class ChatbotComponent implements OnInit {
   
   showLess() {
     this.paginationLimit = Number(this.paginationLimit) - 3;
+  }
+
+  getLocation() {
+    this.locationService.getPosition().then(pos=>
+      {
+         this.lat = pos.lat
+         this.lng = pos.lng
+         console.log(`Position: ${this.lat} ${this.lng}`);
+    });
+
+    // alterar para o backend
+    this.chatbotService.getAirports().subscribe((coords) => {
+      this.coords = coords;
+    })
+
+    console.log(this.coords)
+    
   }
 
 
