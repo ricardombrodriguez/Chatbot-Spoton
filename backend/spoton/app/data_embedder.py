@@ -41,7 +41,7 @@ def write_embedded_data(data):
 
 
 
-if __name__ == '__main__':
+def initialize():
 
     # store model as 'ft_model' so it can be used to embed a sentence
     # parse the data according to the patterns in the 'dataset.json' file

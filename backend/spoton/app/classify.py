@@ -8,6 +8,7 @@ from app import data_embedder
 This class is used to classify an intent, so that we can categorize the user input and give the right response.
 """
 
+data_embedder.initialize()
 dataset = codecs.open('app/embedded_data.json', 'r', encoding='utf-8').read()
 data = json.loads(dataset)
 
