@@ -5,7 +5,6 @@ import fasttext as ft
 
 import NLP
 import fasttext.util
-#asd
 
 def parse_data(ft_model):
     with open("dataset.json") as file:
@@ -26,7 +25,10 @@ def parse_data(ft_model):
 
 
 def embed_sentence(sentence, ft_model):
+    import time
+    start_time = time.time()
     sentence_vec = ft_model.get_sentence_vector(sentence)
+    print("--- %s seconds ---" % (time.time() - start_time))
     return sentence_vec
 
 
@@ -43,7 +45,11 @@ def write_embedded_data(data):
 
 
 if __name__ == '__main__':
+
+    # store model as 'ft_model' so it can be used to embed a sentence
+    # parse the data according to the patterns in the 'dataset.json' file
+    # write the embedded data in a file so it can be read later
+
     ft_model = load_embedding_model()
-    ft_model.get_dimension()
     embedded_data = parse_data(ft_model) 
     write_embedded_data(embedded_data)

@@ -1,22 +1,18 @@
 import json
 import codecs
 import numpy as np
-
 import data_embedder
 import NLP
 
-#asd
 """
 This class is used to classify an intent, so that we can categorize the user input and give the right response.
 """
 
-# dataset = codecs.open('embedded_data.json', 'r', encoding='utf-8').read()
-# data = json.loads(dataset)
-# print(type(data))
-# print(data)
-
+dataset = codecs.open('embedded_data.json', 'r', encoding='utf-8').read()
+data = json.loads(dataset)
 
 ft_model = data_embedder.load_embedding_model()
+print("ft_model ready")
 
 
 def normalize(vec):
@@ -100,28 +96,3 @@ def classify(input):
     input_vec = data_embedder.embed_sentence(input, ft_model)
     output_intent = detect_intent(data, input_vec)
     return output_intent
-
-if __name__ == '__main__':
-
-
-    dataset = codecs.open('embedded_data.json', 'r', encoding='utf-8').read()
-    data = json.loads(dataset)
-    print(type(data))
-    print(data)
-
-
-
-    input = NLP.preprocess_main("detals")
-    input_vec = data_embedder.embed_sentence(input, ft_model)
-    output_intent = detect_intent(data, input_vec)
-    print(output_intent)
-
-    input = NLP.preprocess_main("bie")
-    input_vec = data_embedder.embed_sentence(input, ft_model)
-    output_intent = detect_intent(data, input_vec)
-    print(output_intent)
-
-    input = NLP.preprocess_main("i want fligh from amsterdam to porto")
-    input_vec = data_embedder.embed_sentence(input, ft_model)
-    output_intent = detect_intent(data, input_vec)
-    print(output_intent)
