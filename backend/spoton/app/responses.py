@@ -24,16 +24,21 @@ def showflights(tag,keys):
     #find keys
     print(keys)
     #ver o caso
-    rcv= views.get_flights()
-    if "to" in keys:
-        rcv=views.get_flights_by_departure(keys[keys.index("to")+1]
-)    
+    if  "to" in keys and "from" in keys:
+        rcv=views.get_flights_by_arr_dep(keys[keys.index("from")+1],keys[keys.index("to")+1])
+    elif "from" in keys:
+        rcv=views.get_flights_by_departure(keys[keys.index("from")+1])
+    elif "to" in keys:
+        rcv=views.get_flights_by_arrival(keys[keys.index("to")+1])
+    else:  
+        rcv= views.get_flights()
     flights= rcv["data"]
     if len(flights)>0:
         response= get_response(tag)
         for f in flights:
-            
-            response = response+"\n"+f["flight"]["iata"]+"\n departure" +" "+  f["departure"]["scheduled"]+" "+ f["departure"]["airport"] +"\n arrival" + f["arrival"]["airport"] +" "+ f["arrival"]["scheduled"]+"\n\n"       
+            print(f)
+            if f["flight"]["iata"]:
+                response = response+ "\n"+f["flight"]["iata"]+"\n departure" +" "+  f["departure"]["scheduled"]+" "+ f["departure"]["airport"] +"\n arrival" + f["arrival"]["airport"] +" "+ f["arrival"]["scheduled"]+"\n\n"       
     else:
         response = "Sorry there are no offers available now."
     return response
@@ -90,16 +95,17 @@ def get_response(tag):
 
 #asd
 def generate_response(message):
+
+    # identify the appropriate tag and sent the correct response (type + message)
+
     global feedback
     tag = identify_intent(message)  # get the adequate tag from the user input
-    response = ""
+    
     if tag != "":
         if tag == "book":
             gen=0
             if gen > 0:
-                
-                response = "Your flight has been booked successfully. Please show this Booking ID at the counter: " 
-                    
+                response = "Your flight has been booked successfully. Please show this Booking ID at the counter: "  
             else:
                 response = "Sorry we are sold out now!"
 
@@ -169,4 +175,6 @@ def generate_response(message):
             response = get_response(tag)
     else:
         response = "Sorry! I didn't get it, please try to be more precise."
+
+    response = {'type': tag, 'message' : response }
     return response

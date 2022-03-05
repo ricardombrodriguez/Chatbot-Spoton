@@ -65,13 +65,17 @@ export class ChatbotComponent implements OnInit {
 
     this.chatbotService.sendMessage(this.message).subscribe((response) => {
 
-      console.log(response)
+      //response is a dictionary
+
+
+      //console.log(response)
 
       //adicionar mensagem do user à lista de mensagens da conversation
-      let botMsg : Message = {msg : response, is_me : false, username : ''+localStorage.getItem('username'), type : 'normal'}
+      let botMsg : Message = {msg : response["message"], is_me : false, username : ''+localStorage.getItem('username'), type : response["type"]}
       this.conversations.push(botMsg);
 
-      console.log(botMsg)
+      //console.log(botMsg)
+      console.log(botMsg.type)
 
       // reset do input
       this.message = "";
