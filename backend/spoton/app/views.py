@@ -6,6 +6,7 @@ from app import responses
 from app.models import Booking, Message
 from app.serializers import BookingSerializer, MessageSerializer
 import json
+import numpy
 
 # GLOBAL VARIABLES
 API_KEY = "dfe729ad8d796a40a6647d019d80b3b7"    # access key to API 
@@ -64,6 +65,45 @@ def user_bookings(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = BookingSerializer(bookings, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_nearest_airport(request):
+
+    latitude = request.GET['latitude']
+    longitude = request.GET['longitude']
+    user_coords = numpy.array((float(latitude),float(longitude)))
+    airports_coords = get_airports()
+
+    nearest_aiport = ''
+    nearest_distance = 1000000
+
+    for airport,coords in airports_coords.items():
+        if coords[0] is None or coords[1] is None:
+            continue
+        airport_coords = numpy.array((float(coords[0]),float(coords[1])))
+
+        euclidean_distance = numpy.linalg.norm(user_coords-airport_coords)
+        if euclidean_distance < nearest_distance:
+            nearest_aiport = airport
+            nearest_distance = euclidean_distance
+
+    return Response(nearest_aiport)
+
+
+# ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
+def get_airports():
+    # get all airports on only one page
+    url = BASE_URL + 'airports?access_key=' + API_KEY + '&limit=100000'
+
+    resp = requests.get(url=url)
+    data = resp.json()
+    airports = data['data']
+
+    # dictionary of all airports and their respective geographic coordinates
+    coords_airports = {airport['airport_name']: (airport['latitude'], airport['longitude']) for airport in airports}
+
+    return coords_airports
 
 
 # ################################################# OBTER TODOS OS VOOS ########################################################
@@ -170,22 +210,6 @@ def get_cities():
     all_cities = data['data']
     return { city['city_name'] : city['iata_code'] for city in all_cities }
 
-
-# ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
-@api_view(['GET'])
-def get_airports(request):
-    
-    # get all airports on only one page
-    url = BASE_URL + 'airports?access_key='+ API_KEY +'&limit=100000'
-
-    resp = requests.get(url=url)
-    data = resp.json()
-    airports = data['data']
-    
-    # dictionary of all airports and their respective geographic coordinates
-    coords_airports = { airport['airport_name'] : (airport['latitude'], airport['longitude']) for airport in airports }
-
-    return Response(coords_airports)
 
 
     
