@@ -1,13 +1,10 @@
 import numpy as np
-
 import json
 import fasttext as ft
-
-import NLP
-import fasttext.util
+from app import NLP
 
 def parse_data(ft_model):
-    with open("dataset.json") as file:
+    with open("app/dataset.json") as file:
         data = json.load(file)
 
     embedded_patterns = []
@@ -33,7 +30,7 @@ def embed_sentence(sentence, ft_model):
 
 
 def load_embedding_model():
-    ft_model = ft.load_model('cc.en.300.bin')
+    ft_model = ft.load_model('app/cc.en.300.bin')
     return ft_model
 
 def write_embedded_data(data):

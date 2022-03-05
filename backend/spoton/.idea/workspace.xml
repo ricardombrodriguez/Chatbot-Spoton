@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ece7246-899b-4bbe-a2eb-34dce4a95a92" name="Changes" comment="" />
+    <list default="true" id="0ece7246-899b-4bbe-a2eb-34dce4a95a92" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/classify.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/classify.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data_embedder.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/data_embedder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/responses.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/responses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spoton/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/spoton/urls.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="25vkikceEZnDRNcy624w07EbVAX" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -27,6 +38,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="spoton.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -54,6 +66,7 @@
       <option name="presentableId" value="Default" />
       <updated>1646415078059</updated>
       <workItem from="1646415097142" duration="2119000" />
+      <workItem from="1646452817167" duration="1146000" />
     </task>
     <servers />
   </component>

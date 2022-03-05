@@ -3,11 +3,11 @@ import random
 import datetime
 import uuid
 
-import classify
+from app import classify
 
 seat_count = 50
 
-with open("dataset.json") as file:
+with open("app/dataset.json") as file:
     data = json.load(file)
 
 # categorize user input
