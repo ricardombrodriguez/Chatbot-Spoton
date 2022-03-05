@@ -120,7 +120,7 @@ def get_response(tag):
     response = random.choice(responses)
     return response
 
-
+#asd
 def generate_response(message):
 
     tag = identify_intent(message)  # get the adequate tag from the user input

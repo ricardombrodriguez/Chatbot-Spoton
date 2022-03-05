@@ -5,6 +5,7 @@ import numpy as np
 import data_embedder
 import NLP
 
+#asd
 """
 This class is used to classify an intent, so that we can categorize the user input and give the right response.
 """

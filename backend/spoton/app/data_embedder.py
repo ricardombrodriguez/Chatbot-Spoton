@@ -5,6 +5,7 @@ import fasttext as ft
 
 import NLP
 import fasttext.util
+#asd
 
 def parse_data(ft_model):
     with open("dataset.json") as file:
