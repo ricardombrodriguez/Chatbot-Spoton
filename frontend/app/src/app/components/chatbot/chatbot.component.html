@@ -96,11 +96,16 @@
 
                 </div>
 
+                <div>
+                    <button type="button" class="btn btn-success"  (click)="sendAutomaticMessage(1)"> Show Flights </button>
+                    <button type="button" class="btn btn-success"  (click)="sendAutomaticMessage(2)"> Click Me </button>
+                </div>
+
                 <div class="box-footer">
                     <div class="input-group">
-                        <input type="text" name="message" (keyup.enter)="sendMessage()" [(ngModel)]="message" placeholder="Type message" class="form-control">
+                        <input type="text" name="message" (keyup.enter)="sendMessage('estieidreads')" [(ngModel)]="message" placeholder="Type message" class="form-control">
                         <span class="input-group-btn">
-                            <button (click)="sendMessage()" class="btn btn-default btn-flat">Send</button>
+                            <button (click)="sendMessage('estieidreads')" class="btn btn-default btn-flat">Send</button>
                         </span>
                     </div>
                 </div>

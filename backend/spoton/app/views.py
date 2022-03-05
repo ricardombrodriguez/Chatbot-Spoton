@@ -8,8 +8,8 @@ from django.http import HttpResponse
 import json
 
 # GLOBAL VARIABLES
-API_KEY = "7dff77adf49dbf87535842af0ca96b20"
-BASE_URL = 'http://api.aviationstack.com/v1/'
+API_KEY = "7dff77adf49dbf87535842af0ca96b20"    # access key to API 
+BASE_URL = 'http://api.aviationstack.com/v1/' 
 
 
 # ################################################# OBTER TODOS OS VOOS ########################################################
@@ -20,9 +20,8 @@ def get_flights(request):
 
     resp = requests.get(url=url)
     data = resp.json()
-    print(data)
 
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return Response(data)
 
 
 # ########################################## OBTER UM DETERMINADO VOO ########################################################
@@ -32,12 +31,12 @@ def get_flight(request):
     # ALTERAR AQUI!
     flight_iata = "AC9231"
     
-    url = BASE_URL + 'flights?access_key='+ API_KEY +"&flight_iata="+ flight_iata
+    url = BASE_URL + 'flights?access_key='+ API_KEY +"&flight_iata="+ flight_iata       # get data from API to get a specific flight details
 
     resp = requests.get(url=url)
     data = resp.json()
 
-    data = [ fligth for fligth in data['data'] if fligth["flight_status"] == "scheduled" ]
+    data = [ flight for flight in data['data'] if flight["flight_status"] == "scheduled" ]  # filter scheduled flights 
     
     return Response(data)
 
@@ -49,21 +48,18 @@ def get_flights_by_arrival(request):
     # ALTERAR AQUI
     arrivalCity = "Porto"
     
-    with open('cities.json') as json_file:
-        data = json.load(json_file)
-        
-    all_cities = data['data']
+    cities = get_cities()
     
-    cities = { city['city_name'] : city['iata_code'] for city in all_cities }
-    
+    # get iata code of our arrival city and use it to search on the url
     iata_code = cities[arrivalCity]
 
+    # get all flights according the arrival iata code given
     url = BASE_URL + 'flights?access_key='+ API_KEY +'&arr_iata='+ iata_code
 
     resp = requests.get(url=url)
     data = resp.json()
     
-    data = [fligth for fligth in data['data'] if fligth["flight_status"] == "scheduled" ]
+    data = [flight for flight in data['data'] if flight["flight_status"] == "scheduled" ]   # filter scheduled flights 
 
     return Response(data)
 
@@ -74,21 +70,17 @@ def get_flights_by_departure(request):
     # ALTERAR AQUI
     departureCity = "Porto"
     
-    with open('cities.json') as json_file:
-        data = json.load(json_file)
-        
-    all_cities = data['data']
-    
-    cities = { city['city_name'] : city['iata_code'] for city in all_cities }
+    cities = get_cities()
     
     iata_code = cities[departureCity]
 
+    # get all flights according the departure iata code given
     url = BASE_URL + 'flights?access_key='+ API_KEY +'&dep_iata='+ iata_code
 
     resp = requests.get(url=url)
     data = resp.json()
     
-    data = [fligth for fligth in data['data'] if fligth["flight_status"] == "scheduled" ]
+    data = [flight for flight in data['data'] if flight["flight_status"] == "scheduled" ]   # filter scheduled flights 
 
     return Response(data)
 
@@ -100,51 +92,47 @@ def get_flights_by_arr_dep(request):
     departureCity = "Porto"
     arrivalCity = "Frankfurt"
     
-    with open('cities.json') as json_file:
-        data = json.load(json_file)
-        
-    all_cities = data['data']
-    
-    cities = { city['city_name'] : city['iata_code'] for city in all_cities }
+    cities = get_cities()
     
     iata_code_dep = cities[departureCity]
     iata_code_arr = cities[arrivalCity]
 
+    # get all flights according the departure and arrival iata code given
     url = BASE_URL + 'flights?access_key='+ API_KEY +'&dep_iata='+ iata_code_dep + '&arr_iata='+ iata_code_arr
 
     resp = requests.get(url=url)
     data = resp.json()
     
-    data = [fligth for fligth in data['data'] if fligth["flight_status"] == "scheduled" ]
+    data = [flight for flight in data['data'] if flight["flight_status"] == "scheduled" ]   # filter scheduled flights 
 
     return Response(data)
 
+
+ # return a dictionary of all cities and their respective iata code
+def get_cities():
+     # the file 'cities.json' have all cities' data of API 
+    with open('cities.json') as json_file:
+        data = json.load(json_file)
+        
+    all_cities = data['data']
+    return { city['city_name'] : city['iata_code'] for city in all_cities }
 
 
 # ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
 @api_view(['GET'])
 def get_airports(request):
     
+    # get all airports on only one page
     url = BASE_URL + 'airports?access_key='+ API_KEY +'&limit=100000'
 
     resp = requests.get(url=url)
     data = resp.json()
-    
     airports = data['data']
+    
+    # dictionary of all airports and their respective geographic coordinates
     coords_airports = { airport['airport_name'] : (airport['latitude'], airport['longitude']) for airport in airports }
 
     return Response(coords_airports)
 
-
-# #########################################################################################################################
-@api_view(['GET'])
-def get_city(request):
-    
-    url = BASE_URL + 'cities?access_key='+ API_KEY
-
-    resp = requests.get(url=url)
-    data = resp.json()
-
-    return Response(data)
 
     

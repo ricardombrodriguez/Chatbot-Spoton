@@ -23,17 +23,37 @@ export class ChatbotComponent implements OnInit {
 
   }
 
-  sendMessage() {
+  sendAutomaticMessage(bttn_id : number) {
+    switch(bttn_id) { 
+      case 1: { 
+        this.sendMessage("No flights right now :/")
+        break; 
+      } 
+      case 2: { 
+        this.sendMessage("Paulo faz esse caralho")
+        break; 
+      } 
+      default: { 
+        //statements; 
+        break; 
+      } 
+   } 
+  }
+
+  sendMessage(message : string) {
 
     console.log("send message: " + this.message)
 
     //adicionar mensagem do user à lista de mensagens da conversation
-    let userMsg : Message = {msg : this.message, me : true}
-    this.conversations.push(userMsg);
+    if (this.message) {
+      let userMsg : Message = {msg : this.message, me : true}
+      this.conversations.push(userMsg);
+    }
+    
 
     console.log("done")
 
-    let botMsg : Message = {msg : "estieidreds", me : false}
+    let botMsg : Message = {msg : message, me : false}
     console.log(botMsg)
     this.conversations.push(botMsg);
 
