@@ -99,17 +99,11 @@ export class ChatbotComponent implements OnInit {
   }
 
   getLocation() {
-    this.locationService.getPosition().then(pos=>
-      {
+    this.locationService.getPosition().then(pos=> {
          this.lat = pos.lat
          this.lng = pos.lng
          console.log(`Position: ${this.lat} ${this.lng}`);
     });
-
-    // alterar para o backend
-    this.chatbotService.getAirports().subscribe((coords) => {
-      this.coords = coords;
-    })
 
     console.log(this.coords)
     

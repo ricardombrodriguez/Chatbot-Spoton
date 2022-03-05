@@ -39,7 +39,7 @@ def showflights(tag,keys):
     flights= rcv["data"]
     flightwithunique=[]
     if len(flights)>0:
-        response= get_response(tag)
+        text= get_response(tag)
         for f in flights:
             
             if f["flight"]["iata"]:
@@ -54,9 +54,10 @@ def showflights(tag,keys):
             for item in flightwithunique:
                 if nf== item[0]:
                     getf=item[1]
-                    response = response+ "\n"+getf["flight"]["iata"]+"\n departure " +" "+  getf["departure"]["scheduled"]+" "+ getf["departure"]["airport"] +"\n arrival " + getf["arrival"]["airport"] +" "+ getf["arrival"]["scheduled"]+"price"+str(pricingdic[nf])+"\n\n"       
+                    build_response_json= {"tag":tag, "body":{"default_msg":text,"airline":getf["airline"]["name"],"flight_iata":getf["flight"]["iata"],"dep_airport":getf["departure"]["airport"],"dep_time":getf["departure"]["scheduled"], "arr_airport":getf["arrival"]["airport"],"arr_time":getf["arrival"]["scheduled"],"price":str(pricingdic[nf])}}
+                    response = json.dumps(build_response_json)       
     else:
-        response = "Sorry there are no offers available now."
+        response = {"tag":tag,"body":"Sorry there are no offers available now."}
     return response
 
 
