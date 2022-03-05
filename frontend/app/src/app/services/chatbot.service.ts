@@ -15,8 +15,4 @@ export class ChatbotService {
     return this.http.get<any>(this.baseUrl + 'message?msg=' + message);
   }
 
-  getAirports(): Observable<any> {
-    return this.http.get<any>(this.baseUrl + 'airports');
-  }
-
 }
