@@ -12,9 +12,35 @@
 
             <div class="box box-success direct-chat direct-chat-success">
 
+                <ngb-carousel >
+                    <ng-template ngbSlide>
+
+                      <div class="carousel-caption">
+                        <h3>First slide label</h3>
+                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                      </div>
+                    </ng-template>
+                    <ng-template ngbSlide>
+
+                      <div class="carousel-caption">
+                        <h3>Second slide label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      </div>
+                    </ng-template>
+                    <ng-template ngbSlide>
+
+                      <div class="carousel-caption">
+                        <h3>Third slide label</h3>
+                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                      </div>
+                    </ng-template>
+                  </ngb-carousel>
+
                 <div class="box-body">
                     <!-- Conversations are loaded here -->
                     <div class="direct-chat-messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+
+                        <app-ticket></app-ticket>
 
                         <ng-container *ngFor="let chat of conversations">
                            
@@ -30,29 +56,7 @@
 
                                     {{chat?.msg}}
 
-                                    <ngb-carousel >
-                                        <ng-template ngbSlide>
-
-                                          <div class="carousel-caption">
-                                            <h3>First slide label</h3>
-                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                          </div>
-                                        </ng-template>
-                                        <ng-template ngbSlide>
-
-                                          <div class="carousel-caption">
-                                            <h3>Second slide label</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                          </div>
-                                        </ng-template>
-                                        <ng-template ngbSlide>
-
-                                          <div class="carousel-caption">
-                                            <h3>Third slide label</h3>
-                                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                                          </div>
-                                        </ng-template>
-                                      </ngb-carousel>
+                                
 
                                     <!-- CHECK IF BOT ANSWER CONTAINS MORE THAN 1 MESSAGE -->
                                     <div *ngIf="(chat?.msg?.answer)?.length > 1; else default_or_dialogflow_message ">
