@@ -1,11 +1,78 @@
 {"intents" :[
-    {"tag": "greeting" ,
-    "patterns": ["Hi","Hello", "Hey", "Good morning", "" ]
-    "responses":
+    {
+    "tag": "greeting" ,
+    "patterns": ["Hi","Hello", "Hey", "Good morning", "Good afternoon", "Good evening" ],
+    "responses":["Hello! I'm a bot, how can I help?", "Hi! I'm the bot, how can I be of use?", "Hi! Can you provide your location?"]
+    },
+    {
+    "tag":"goodbye_fb",
+    "patterns":["Bye", "Good Night", "Leaving now", "See you later"],
+    "responses":["Goodbye and thank you for your preference" ]
+    },
 
-}
+    {
+    "tag":"goodbye",
+    "patterns":["Bye", "Good Night", "Leaving now", "See you later"],
+    "responses":["Before leaving can you please rate the service by sending a number between 0-10" ]
+    },  
+    
+    {
+    "tag":"feedback",
+    "patterns":["0","1","2","3","4","5","6","7","8","9","10"],
+    "responses":["Thank you!", "I'm sorry, we will make sure to improve" ]
+    },
+    {"tag": "human_request",
+        "patterns":["Can i talk to a human", "get me an agent","can i talk to staff", "Request human", "Request agent"],
+        "responses":["I will connect you to an agent shortly"]
+    
+    },
 
+    {
+    "tag": "showflights",
+    "patterns": ["Show flights", "flights", "flight to", "flights from", "flight from", "flights to"],
+    "responses":["There you go","These are the flights I found"]
+    },
+  
+    {"tag": "location",
+        "patterns":[],
+        "responses":[]
+    
+    },
+    
+    {
+    "tag":"details",
+    "patterns":["Show details", "Details", "Give me details","Detail please", "Detail"],
+    "responses":["These are the details for the selected flight"]
 
+    },
+    
+    {  
+    "tag":"book",
+    "patterns":["Book", "book flight", "Book this flight", "Book it"],
+    "responses":["The selected flight was booked"]
+
+    },
+
+    {"tag":"reservations",
+    "patterns":["Show reservations", "Reserves","Reservations","What are my booked flights","Booked flights","My reservations"],
+    "responses":["These are your reservations"]
+
+    },
+    {"tag":"showagain",
+    "patterns":"Show flights again",
+    "responses":[]
+
+    },
+    {
+    "tag":"menu",
+    "patterns":["Show menu", "menu"],
+    "responses":["Here you go"]
+    
+    },
+    {"tag":"funcionalities",
+    "patterns":["What can you do?", "What are your functions?", "What can you show?", "What are your functionalities?", "What do you do?"],
+    "responses":["I can help you find and book flights from your location, as well as provide some details about each flight, besides that i can also connect you to an human agent"]
+    }
 
 ]
 
