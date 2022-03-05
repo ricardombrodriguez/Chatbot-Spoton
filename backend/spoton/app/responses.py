@@ -1,14 +1,17 @@
+from enum import unique
 import json
 import random
 import datetime
 from urllib import response
 import uuid
+import random
 from django import views
 from app import views
 from httplib2 import Response
 from app import NLP
 from app import classify
-
+pricingdic={}
+pricetuple=[]
 seat_count = 50
 feedback= False
 with open("app/dataset.json") as file:
@@ -21,6 +24,7 @@ def identify_intent(message):
     return tag
 
 def showflights(tag,keys):
+    global pricingdic
     #find keys
     print(keys)
     #ver o caso
@@ -33,12 +37,24 @@ def showflights(tag,keys):
     else:  
         rcv= views.get_flights()
     flights= rcv["data"]
+    flightwithunique=[]
     if len(flights)>0:
         response= get_response(tag)
         for f in flights:
-            print(f)
+            
             if f["flight"]["iata"]:
-                response = response+ "\n"+f["flight"]["iata"]+"\n departure" +" "+  f["departure"]["scheduled"]+" "+ f["departure"]["airport"] +"\n arrival" + f["arrival"]["airport"] +" "+ f["arrival"]["scheduled"]+"\n\n"       
+                uniqueid= f["flight"]["iata"]+f["departure"]["scheduled"]
+                print(uniqueid)
+                if uniqueid not in pricingdic:
+                    pricingdic[uniqueid]= random.randint(50,250)
+                    pricetuple.append((uniqueid,pricingdic[uniqueid]))
+                    flightwithunique.append((uniqueid,f))
+                    sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
+        for nf,p in sorted_by_second:
+            for item in flightwithunique:
+                if nf== item[0]:
+                    getf=item[1]
+                    response = response+ "\n"+getf["flight"]["iata"]+"\n departure " +" "+  getf["departure"]["scheduled"]+" "+ getf["departure"]["airport"] +"\n arrival " + getf["arrival"]["airport"] +" "+ getf["arrival"]["scheduled"]+"price"+str(pricingdic[nf])+"\n\n"       
     else:
         response = "Sorry there are no offers available now."
     return response
@@ -70,8 +86,8 @@ def request_human():
 def funcionalities(tag):
     response =get_response(tag)
     return response 
-def show_menu():
-    response = funcionalities()
+def show_menu(tag):
+    response = funcionalities(tag)
 
     return response
 
@@ -156,7 +172,7 @@ def generate_response(message):
             response += request_human()
 
         elif tag == "menu":
-            response = show_menu()
+            response = show_menu(tag)
         elif tag== "showagain":
             response =get_response(tag)
         elif tag=="funcionalities":
