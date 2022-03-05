@@ -51,11 +51,11 @@ export class ChatbotComponent implements OnInit {
     }
     
 
-    console.log("done")
+    // console.log("done")
 
-    let botMsg : Message = {msg : message, me : false}
-    console.log(botMsg)
-    this.conversations.push(botMsg);
+    // let botMsg : Message = {msg : message, me : false}
+    // console.log(botMsg)
+    // this.conversations.push(botMsg);
 
     // console.log(this.conversations)
 
