@@ -1,19 +1,18 @@
 import json
 import codecs
 import numpy as np
-
 import data_embedder
 import NLP
 
-#asd
 """
 This class is used to classify an intent, so that we can categorize the user input and give the right response.
 """
 
-dataset = codecs.open('dataset.json', 'r', encoding='utf-8').read()
+dataset = codecs.open('embedded_data.json', 'r', encoding='utf-8').read()
 data = json.loads(dataset)
 
 ft_model = data_embedder.load_embedding_model()
+print("ft_model ready")
 
 
 def normalize(vec):
@@ -23,10 +22,6 @@ def normalize(vec):
 
 # calculate similarity between patterns (better than using jacquard distance)
 def cosine_similarity(A, B):
-    print("====")
-    print(A)
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(B)
     normA = normalize(A)
     normB = normalize(B)
     sim = np.dot(A, B) / (normA * normB)
@@ -101,9 +96,3 @@ def classify(input):
     input_vec = data_embedder.embed_sentence(input, ft_model)
     output_intent = detect_intent(data, input_vec)
     return output_intent
-
-if __name__ == '__main__':
-    input = NLP.preprocess_main("I want a flight to Amsterdam")
-    input_vec = data_embedder.embed_sentence(input, ft_model)
-    output_intent = detect_intent(data, input_vec)
-    print(output_intent)

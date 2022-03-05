@@ -59,7 +59,7 @@
 
     },
     {"tag":"showagain",
-    "patterns":"Show flights again",
+    "patterns": ["Show flights again"],
     "responses":[]
 
     },
