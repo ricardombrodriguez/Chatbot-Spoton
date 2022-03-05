@@ -7,18 +7,16 @@ from django.http import HttpResponse
 
 import json
 
-# Create your views here.
-
-key = "7dff77adf49dbf87535842af0ca96b20"
-
+# GLOBAL VARIABLES
+API_KEY = "7dff77adf49dbf87535842af0ca96b20"
 BASE_URL = 'http://api.aviationstack.com/v1/'
 
-# get all flights
 
+# ################################################# OBTER TODOS OS VOOS ########################################################
 @api_view(['GET'])
 def get_flights(request):
     
-    url = BASE_URL + 'flights?access_key='+ key
+    url = BASE_URL + 'flights?access_key='+ API_KEY
 
     resp = requests.get(url=url)
     data = resp.json()
@@ -27,18 +25,26 @@ def get_flights(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 
+# ########################################## OBTER UM DETERMINADO VOO ########################################################
 @api_view(['GET'])
-def get_flight(request,flight_id):
+def get_flight(request):
     
-    url = BASE_URL + 'flights?access_key='+ key
+    # ALTERAR AQUI!
+    flight_iata = "AC9231"
+    
+    url = BASE_URL + 'flights?access_key='+ API_KEY +"&flight_iata="+ flight_iata
 
     resp = requests.get(url=url)
     data = resp.json()
 
+    data = [ fligth for fligth in data['data'] if fligth["flight_status"] == "scheduled" ]
+    
     return Response(data)
 
+
+# ########################### OBTER VOOS DADAS AS CIDADES DE PARTIDA OU DE CHEGADA OU AMBAS #####################################
 @api_view(['GET'])
-def get_flights_by_ArrivalCity(request):
+def get_flights_by_arrival(request):
     
     # ALTERAR AQUI
     arrivalCity = "Porto"
@@ -52,17 +58,89 @@ def get_flights_by_ArrivalCity(request):
     
     iata_code = cities[arrivalCity]
 
-    url = BASE_URL + 'flights?access_key='+ key +'&arr_iata='+ iata_code
+    url = BASE_URL + 'flights?access_key='+ API_KEY +'&arr_iata='+ iata_code
 
     resp = requests.get(url=url)
     data = resp.json()
+    
+    data = [fligth for fligth in data['data'] if fligth["flight_status"] == "scheduled" ]
 
     return Response(data)
 
+
+@api_view(['GET'])
+def get_flights_by_departure(request):
+    
+    # ALTERAR AQUI
+    departureCity = "Porto"
+    
+    with open('cities.json') as json_file:
+        data = json.load(json_file)
+        
+    all_cities = data['data']
+    
+    cities = { city['city_name'] : city['iata_code'] for city in all_cities }
+    
+    iata_code = cities[departureCity]
+
+    url = BASE_URL + 'flights?access_key='+ API_KEY +'&dep_iata='+ iata_code
+
+    resp = requests.get(url=url)
+    data = resp.json()
+    
+    data = [fligth for fligth in data['data'] if fligth["flight_status"] == "scheduled" ]
+
+    return Response(data)
+
+
+@api_view(['GET'])
+def get_flights_by_arr_dep(request):
+    
+    # ALTERAR AQUI
+    departureCity = "Porto"
+    arrivalCity = "Frankfurt"
+    
+    with open('cities.json') as json_file:
+        data = json.load(json_file)
+        
+    all_cities = data['data']
+    
+    cities = { city['city_name'] : city['iata_code'] for city in all_cities }
+    
+    iata_code_dep = cities[departureCity]
+    iata_code_arr = cities[arrivalCity]
+
+    url = BASE_URL + 'flights?access_key='+ API_KEY +'&dep_iata='+ iata_code_dep + '&arr_iata='+ iata_code_arr
+
+    resp = requests.get(url=url)
+    data = resp.json()
+    
+    data = [fligth for fligth in data['data'] if fligth["flight_status"] == "scheduled" ]
+
+    return Response(data)
+
+
+
+# ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
+@api_view(['GET'])
+def get_airports(request):
+    
+    url = BASE_URL + 'airports?access_key='+ API_KEY +'&limit=100000'
+
+    resp = requests.get(url=url)
+    data = resp.json()
+    
+    airports = data['data']
+    coords_airports = { airport['airport_name'] : (airport['latitude'], airport['longitude']) for airport in airports }
+
+    return Response(coords_airports)
+
+
+# #########################################################################################################################
 @api_view(['GET'])
 def get_city(request):
     
-    url = BASE_URL + 'cities?access_key='+ key
+    url = BASE_URL + 'cities?access_key='+ API_KEY
 
     resp = requests.get(url=url)
     data = resp.json()
