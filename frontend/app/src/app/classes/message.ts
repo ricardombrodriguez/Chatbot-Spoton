@@ -1,8 +1,10 @@
 export class Message {
     
     msg! : any;
-    me!: boolean;
+    is_me!: boolean;
+    username!: string;
+    type!: string;
 
-    constructor(msg: string, me: boolean) {}
+    constructor(msg: string, is_me: boolean, username: string, type : string) {}
 
 }
