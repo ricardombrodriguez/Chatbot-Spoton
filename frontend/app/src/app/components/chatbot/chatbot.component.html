@@ -13,12 +13,9 @@
             <div class="box box-success direct-chat direct-chat-success">
 
                 <ngb-carousel >
-                    <ng-template ngbSlide>
+                    <ng-template ngbSlide *ngFor="let flight of flights">
 
-                      <div class="carousel-caption">
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                      </div>
+                        <app-ticket [flight]="flight"></app-ticket>
                     </ng-template>
                     <ng-template ngbSlide>
 
@@ -40,7 +37,7 @@
                     <!-- Conversations are loaded here -->
                     <div class="direct-chat-messages" >
 
-                        <app-ticket></app-ticket>
+                        
 
                         <ng-container *ngFor="let chat of conversations">
                            
