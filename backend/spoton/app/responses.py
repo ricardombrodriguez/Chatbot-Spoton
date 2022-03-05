@@ -63,7 +63,7 @@ def showflights(tag,keys):
 
 
 def location():
-    response="are you in brazil aakakkaka"
+    text="are you in brazil aakakkaka"
     return response
 
 

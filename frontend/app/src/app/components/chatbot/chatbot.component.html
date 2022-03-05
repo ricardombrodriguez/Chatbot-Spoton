@@ -12,9 +12,32 @@
 
             <div class="box box-success direct-chat direct-chat-success">
 
+                <ngb-carousel >
+                    <ng-template ngbSlide *ngFor="let flight of flights">
+
+                        <app-ticket [flight]="flight"></app-ticket>
+                    </ng-template>
+                    <ng-template ngbSlide>
+
+                      <div class="carousel-caption">
+                        <h3>Second slide label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      </div>
+                    </ng-template>
+                    <ng-template ngbSlide>
+
+                      <div class="carousel-caption">
+                        <h3>Third slide label</h3>
+                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                      </div>
+                    </ng-template>
+                  </ngb-carousel>
+
                 <div class="box-body">
                     <!-- Conversations are loaded here -->
                     <div class="direct-chat-messages" >
+
+                        
 
                         <ng-container *ngFor="let chat of conversations">
                            
@@ -29,6 +52,8 @@
                                 <div class="direct-chat-text" style=" display: flex; justify-content: space-between;">
 
                                     {{chat?.msg}}
+
+                                
 
                                     <!-- CHECK IF BOT ANSWER CONTAINS MORE THAN 1 MESSAGE -->
                                     <div *ngIf="(chat?.msg?.answer)?.length > 1; else default_or_dialogflow_message ">
