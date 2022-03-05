@@ -20,7 +20,7 @@ class Airport(models.Model):
     latitude=models.CharField(max_length=9)
     longitude=models.CharField(max_length=9)   
     #airport and country name as a string
-    aiport_name = models.CharField(max_length=50)
+    airport_name = models.CharField(max_length=50)
     country_name= models.CharField(max_length=50,nullable=True)
     #phone number for display only
     phone_number= models.CharField(max_length=50,nullable=True)
@@ -178,7 +178,7 @@ class Airplane(models.Model):
     construction_number = int( models.CharField() )
     registration_number = models.CharField()
     
-    plane_owner = models.CharField()
+    plane_owner = models.CharField(nullable=True)
     plane_series = int( models.CharField() )
     plane_status = models.CharField()
     production_line = models.CharField()
