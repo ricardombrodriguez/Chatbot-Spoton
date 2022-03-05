@@ -20,6 +20,7 @@ from app import views
 urlpatterns = [
     #path('admin/', admin.site.urls),
     #path('/', views.main_page),
+    path('message', views.message),
     path('flights', views.get_flights),
     path('flight', views.get_flight),
     path('city', views.get_city),

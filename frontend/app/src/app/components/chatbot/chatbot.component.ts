@@ -57,21 +57,24 @@ export class ChatbotComponent implements OnInit {
     console.log(botMsg)
     this.conversations.push(botMsg);
 
-    console.log(this.conversations)
+    // console.log(this.conversations)
 
-    this.message = "";
+    // this.message = "";
 
-    // mandar mensagem ao backend e receber resposta
-    // this.chatbotService.sendMessage(this.message).subscribe((response) => {
+    this.chatbotService.sendMessage(this.message).subscribe((response) => {
 
-    //   //adicionar mensagem do user à lista de mensagens da conversation
-    //   let botMsg = new Message(response,false)
-    //   this.conversations.push(botMsg);
+      console.log(response)
 
-    //   // reset do input
-    //   this.message = "";
+      //adicionar mensagem do user à lista de mensagens da conversation
+      let botMsg : Message = {msg : response, me : false}
+      this.conversations.push(botMsg);
 
-    // })
+      console.log(botMsg)
+
+      // reset do input
+      this.message = "";
+
+    })
 
   }
 

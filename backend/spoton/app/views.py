@@ -4,12 +4,27 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 import requests
 from django.http import HttpResponse
+from app import responses
 
 import json
 
 # GLOBAL VARIABLES
 API_KEY = "7dff77adf49dbf87535842af0ca96b20"    # access key to API 
 BASE_URL = 'http://api.aviationstack.com/v1/' 
+
+
+
+@api_view(['GET'])
+def message(request):
+
+    message = request.GET['msg']
+    print(message)
+    
+    bot_response = responses.generate_response(message)
+
+    print(bot_response)
+
+    return Response(bot_response)
 
 
 # ################################################# OBTER TODOS OS VOOS ########################################################

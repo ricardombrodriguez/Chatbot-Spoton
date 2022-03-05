@@ -1,14 +1,14 @@
 import json
 import codecs
 import numpy as np
-import data_embedder
-import NLP
+from app import NLP
+from app import data_embedder
 
 """
 This class is used to classify an intent, so that we can categorize the user input and give the right response.
 """
 
-dataset = codecs.open('embedded_data.json', 'r', encoding='utf-8').read()
+dataset = codecs.open('app/embedded_data.json', 'r', encoding='utf-8').read()
 data = json.loads(dataset)
 
 ft_model = data_embedder.load_embedding_model()
@@ -92,7 +92,7 @@ def detect_intent(data, input_vec):
     return max_sim_intent
 
 def classify(input):
-    input = NLP.preprocess_main(input)
-    input_vec = data_embedder.embed_sentence(input, ft_model)
-    output_intent = detect_intent(data, input_vec)
-    return output_intent
+    normalized_input = NLP.preprocess_main(input)  # sentence normalization
+    input_vector = data_embedder.embed_sentence(normalized_input, ft_model) # embed input sentence to form sentence vector
+    intent_tag = detect_intent(data, input_vector)  # detect intent according to the input vector (using cosine similarity as described above)
+    return intent_tag

@@ -12,7 +12,7 @@ export class ChatbotService {
   constructor(private http: HttpClient) { }
 
   sendMessage(message:string): Observable<any> {
-    return this.http.get<any>(this.baseUrl + 'message?msg' + message);
+    return this.http.get<any>(this.baseUrl + 'message?msg=' + message);
   }
 
 }
