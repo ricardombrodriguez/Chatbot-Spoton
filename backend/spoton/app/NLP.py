@@ -26,6 +26,11 @@ def findkeys(word_tokens):
     for w in word_tokens:
         if w in keywords:
             kws.append(w)
+            try:
+                kws.append(word_tokens[word_tokens.index(w)+1])
+            except:
+                return 404
+        
     return kws
 
 # removes words from a sentence that are included in the 'stop_words' list

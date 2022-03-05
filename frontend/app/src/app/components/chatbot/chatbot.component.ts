@@ -30,7 +30,7 @@ export class ChatbotComponent implements OnInit {
         break; 
       } 
       case 2: { 
-        this.sendMessage("Paulo faz esse caralho")
+        this.sendMessage("Where you want to travel?")
         break; 
       } 
       default: { 

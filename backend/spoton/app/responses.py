@@ -1,115 +1,83 @@
 import json
 import random
 import datetime
+from urllib import response
 import uuid
-
+from django import views
+from app import views
+from httplib2 import Response
+from app import NLP
 from app import classify
 
 seat_count = 50
-
+feedback= False
 with open("app/dataset.json") as file:
     data = json.load(file)
 
 # categorize user input
 def identify_intent(message):
     tag = classify.classify(message)
+    
     return tag
 
+def showflights(tag,keys):
+    #find keys
+    print(keys)
+    #ver o caso
+    rcv= views.get_flights()
+    if "to" in keys:
+        rcv=views.get_flights_by_departure(keys[keys.index("to")+1]
+)    
+    flights= rcv["data"]
+    if len(flights)>0:
+        response= get_response(tag)
+        for f in flights:
+            
+            response = response+"\n"+f["flight"]["iata"]+"\n departure" +" "+  f["departure"]["scheduled"]+" "+ f["departure"]["airport"] +"\n arrival" + f["arrival"]["airport"] +" "+ f["arrival"]["scheduled"]+"\n\n"       
+    else:
+        response = "Sorry there are no offers available now."
+    return response
 
-def book_table():
-    global seat_count
+
+
+def location():
+    response="are you in brazil aakakkaka"
+    return response
+
+
+def book():
+    return ""
+
+    """global seat_count
     seat_count = seat_count - 1
     booking_id = str(uuid.uuid4())
     now = datetime.datetime.now()
     booking_time = now.strftime("%Y-%m-%d %H:%M:%S")
     booking_doc = {"booking_id": booking_id, "booking_time": booking_time}
     bookings_collection.insert_one(booking_doc)
-    return booking_id
+    return booking_id"""
 
 
-def vegan_menu():
-    query = {"vegan": "Y"}
-    vegan_doc = menu_collection.find(query)
-    if vegan_doc.count() > 0:
-        response = "Vegan options are: "
-        for x in vegan_doc:
-            response = response + str(x.get("item")) + " for Rs. " + str(x.get("cost")) + "; "
-        response = response[:-2] # to remove the last ;
-    else:
-        response = "Sorry no vegan options are available"
+#this fucntion show create a request that connects user to an agent
+def request_human():
+    return "blhis"
+    
+def funcionalities(tag):
+    response =get_response(tag)
+    return response 
+def show_menu():
+    response = funcionalities()
+
     return response
 
 
-def veg_menu():
-    query = {"veg": "Y"}
-    vegan_doc = menu_collection.find(query)
-    if vegan_doc.count() > 0:
-        response = "Vegetarian options are: "
-        for x in vegan_doc:
-            response = response + str(x.get("item")) + " for Rs. " + str(x.get("cost")) + "; "
-        response = response[:-2] # to remove the last ;
-    else:
-        response = "Sorry no vegetarian options are available"
-    return response
 
 
-def offers():
-    all_offers = menu_collection.distinct('offer')
-    if len(all_offers)>0:
-        response = "The SPECIAL OFFERS are: "
-        for ofr in all_offers:
-            docs = menu_collection.find({"offer": ofr})
-            response = response + ' ' + ofr.upper() + " On: "
-            for x in docs:
-                response = response + str(x.get("item")) + " - Rs. " + str(x.get("cost")) + "; "
-            response = response[:-2] # to remove the last ;
-    else:
-        response = "Sorry there are no offers available now."
-    return response
 
 
-def suggest():
-    day = datetime.datetime.now()
-    day = day.strftime("%A")
-    if day == "Monday":
-        response = "Chef recommends: Paneer Grilled Roll, Jade Chicken"
-    elif day == "Tuesday":
-        response = "Chef recommends: Tofu Cutlet, Chicken A La King"
-
-    elif day == "Wednesday":
-        response = "Chef recommends: Mexican Stuffed Bhetki Fish, Crispy corn"
-
-    elif day == "Thursday":
-        response = "Chef recommends: Mushroom Pepper Skewers, Chicken cheese balls"
-
-    elif day == "Friday":
-        response = "Chef recommends: Veggie Steak, White Sauce Veggie Extravaganza"
-
-    elif day == "Saturday":
-        response = "Chef recommends: Tofu Cutlet, Veggie Steak"
-
-    elif day == "Sunday":
-        response = "Chef recommends: Chicken Cheese Balls, Butter Garlic Jumbo Prawn"
-    return response
-
-
-def recipe_enquiry(message):
-    all_foods = menu_collection.distinct('item')
-    response = ""
-    for food in all_foods:
-        query = {"item": food}
-        food_doc = menu_collection.find(query)[0]
-        if food.lower() in message.lower():
-            response = food_doc.get("about")
-            break
-    if "" == response:
-        response = "Sorry please try again with exact spelling of the food item!"
-    return response
-
-
-def record_feedback(message, type):
-    feedback_doc = {"feedback_string": message, "type": type}
-    feedback_collection.insert_one(feedback_doc)
+#def record_feedback(message, type):
+#    feedback_doc = {"feedback_string": message, "type": type}
+#    feedback_collection.insert_one(feedback_doc)
 
 
 # sends random response after identifying the tag
@@ -122,51 +90,82 @@ def get_response(tag):
 
 #asd
 def generate_response(message):
-
+    global feedback
     tag = identify_intent(message)  # get the adequate tag from the user input
     response = ""
     if tag != "":
-        if tag == "book_table":
-
-            if seat_count > 0:
-                booking_id = book_table()
-                response = "Your table has been booked successfully. Please show this Booking ID at the counter: " + str(
-                    booking_id)
+        if tag == "book":
+            gen=0
+            if gen > 0:
+                
+                response = "Your flight has been booked successfully. Please show this Booking ID at the counter: " 
+                    
             else:
                 response = "Sorry we are sold out now!"
 
 
-        elif tag == "available_tables":
-            response = "There are " + str(seat_count) + " table(s) available at the moment."
+        elif tag == "greeting":
+            response = get_response(tag)
 
-        elif tag == "veg_enquiry":
-            response = veg_menu()
+        elif tag == "goodbye":#???
+            
+            if feedback:
+                response = "Before leaving can you please rate the service by sending a number between 0-10"
+            else :
+                response= get_response(tag)
 
-        elif tag == "vegan_enquiry":
-            response = vegan_menu()
+        elif tag == "feedback":
+            for intent in data['intents']:
+                if intent['tag'] == tag:
+                    responses = intent['responses']
+           
+            try:
+                rating= int(message)
+                if rating<5:
+                    response= responses[1]
+                    
+                else:
+                    response= responses[0]
+                
+                feedback=True
+            except:
+                response=random.choice(responses)
+                feedback=True
 
-        elif tag == "offers":
-            response = offers()
+        elif tag == "showflights":
+            #devolve um array pos 0 msg de texto pos 1 msg de 
+            msg= message.split(' ')
+            keys = NLP.findkeys(msg)
+            if keys==404:
+                response= "Please input a city after to/from "
+            else:
+                response = showflights(tag,keys)
+            
 
-        elif tag == "suggest":
-            response = suggest()
+        elif tag == "location":
+            response = location()
 
-        elif tag == "recipe_enquiry":
-            response = recipe_enquiry(message)
+        elif tag == "human_request":
+            response =get_response(tag)
+            response += request_human()
 
         elif tag == "menu":
             response = show_menu()
+        elif tag== "showagain":
+            response =get_response(tag)
+        elif tag=="funcionalities":
+            response = funcionalities(tag)
+        elif tag == "details":
+            
+            response = get_response(tag)
 
-        elif tag == "positive_feedback":
-            record_feedback(message, "positive")
-            response = "Thank you so much for your valuable feedback. We look forward to serving you again!"
-
-        elif "negative_response" == tag:
-            record_feedback(message, "negative")
-            response = "Thank you so much for your valuable feedback. We deeply regret the inconvenience. We have " \
-                       "forwarded your concerns to the authority and hope to satisfy you better the next time! "
+        elif tag == "reservations":
+            
+            response = get_response(tag)
+                       
         # for other intents with pre-defined responses that can be pulled from dataset
         else:
+            print("foi aqui")
             response = get_response(tag)
     else:
         response = "Sorry! I didn't get it, please try to be more precise."

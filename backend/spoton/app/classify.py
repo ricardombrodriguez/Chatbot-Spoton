@@ -76,7 +76,7 @@ def detect_intent(data, input_vec):
 
         if tie_flag == 1:
             scores.sort()
-            top = scores[:min(4, len(scores))]
+            top = scores[:min(5, len(scores))]
             intent_score_avg = np.mean(top)
             if intent_score_avg > max_score_avg:
                 max_score_avg = intent_score_avg
@@ -84,12 +84,17 @@ def detect_intent(data, input_vec):
 
         if intent_flag == 1:
             max_sim_intent = intent['tag']
+            print(max_sim_intent, max_sim_score)
         # if exact match was found in this intent, then break 'cause we don't have to iterate through anymore intents
         if break_flag == 1:
             break
-    if break_flag != 1 and ((tie_flag == 1 and intent_flag == 1 and max_score_avg < 0.06) or (intent_flag == 1 and max_sim_score < 0.6)):
-        max_sim_intent = ""
-
+    print(max_sim_intent,max_sim_score, intent_flag, break_flag)
+    if break_flag != 1 and ((tie_flag == 1 and intent_flag == 1 and max_score_avg < 0.07) or (intent_flag != 1 and max_sim_score < 0.5)):
+        print(intent_flag != 1 and max_sim_score < 0.5)
+        print(tie_flag == 1 and intent_flag == 1 and max_score_avg < 0.07)
+        print((tie_flag == 1 and intent_flag != 1 and max_score_avg < 0.07) or (intent_flag != 1 and max_sim_score < 0.5))
+        return ''
+    print(max_sim_intent)
     return max_sim_intent
 
 def classify(input):

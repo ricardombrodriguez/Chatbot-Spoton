@@ -28,15 +28,15 @@ def message(request):
 
 
 # ################################################# OBTER TODOS OS VOOS ########################################################
-@api_view(['GET'])
-def get_flights(request):
+
+def get_flights():
     
     url = BASE_URL + 'flights?access_key='+ API_KEY
 
     resp = requests.get(url=url)
     data = resp.json()
 
-    return Response(data)
+    return data
 
 
 # ########################################## OBTER UM DETERMINADO VOO ########################################################
@@ -78,12 +78,8 @@ def get_flights_by_arrival(request):
 
     return Response(data)
 
-
-@api_view(['GET'])
-def get_flights_by_departure(request):
+def get_flights_by_departure(departureCity):
     
-    # ALTERAR AQUI
-    departureCity = "Porto"
     
     cities = get_cities()
     
@@ -96,8 +92,8 @@ def get_flights_by_departure(request):
     data = resp.json()
     
     data = [flight for flight in data['data'] if flight["flight_status"] == "scheduled" ]   # filter scheduled flights 
-
-    return Response(data)
+    
+    return json.dumps(data)
 
 
 @api_view(['GET'])

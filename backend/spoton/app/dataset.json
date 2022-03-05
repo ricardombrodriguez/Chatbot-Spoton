@@ -1,25 +1,21 @@
 {"intents" :[
     {
     "tag": "greeting" ,
-    "patterns": ["Hi","Hello", "Hey", "Good morning", "Good afternoon", "Good evening" ],
+    "patterns": ["Hi","Hello","hello", "Hey", "Good morning", "Good afternoon", "Good evening" ],
     "responses":["Hello! I'm a bot, how can I help?", "Hi! I'm the bot, how can I be of use?", "Hi! Can you provide your location?"]
     },
     {
-    "tag":"goodbye_fb",
+    "tag":"goodbye",
     "patterns":["Bye", "Good Night", "Leaving now", "See you later"],
     "responses":["Goodbye and thank you for your preference" ]
     },
 
-    {
-    "tag":"goodbye",
-    "patterns":["Bye", "Good Night", "Leaving now", "See you later"],
-    "responses":["Before leaving can you please rate the service by sending a number between 0-10" ]
-    },  
+    
     
     {
     "tag":"feedback",
     "patterns":["0","1","2","3","4","5","6","7","8","9","10"],
-    "responses":["Thank you!", "I'm sorry, we will make sure to improve" ]
+    "responses":["Thank you!", "Thank you so much for your valuable feedback. We deeply regret the inconvenience and hope to do better the next time! " ]
     },
     {"tag": "human_request",
         "patterns":["Can i talk to a human", "get me an agent","can i talk to staff", "Request human", "Request agent"],
@@ -60,7 +56,7 @@
     },
     {"tag":"showagain",
     "patterns": ["Show flights again"],
-    "responses":[]
+    "responses":["There you go"]
 
     },
     {
@@ -70,7 +66,7 @@
     
     },
     {"tag":"funcionalities",
-    "patterns":["What can you do?", "What are your functions?", "What can you show?", "What are your functionalities?", "What do you do?"],
+    "patterns":["What can you do?", "What are your functions?", "What are your functionalities?", "What do you do?"],
     "responses":["I can help you find and book flights from your location, as well as provide some details about each flight, besides that i can also connect you to an human agent"]
     }
 
