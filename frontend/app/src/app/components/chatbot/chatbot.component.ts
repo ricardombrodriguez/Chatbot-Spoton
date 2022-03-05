@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Booking } from 'src/app/classes/booking';
 import { Message } from 'src/app/classes/message';
 import { ChatbotService } from 'src/app/services/chatbot.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -11,15 +13,26 @@ export class ChatbotComponent implements OnInit {
 
   @Input() message!: string;
   conversations : Message[] = [];
+  bookings : Booking[] = [];
 
   startPage!: number;
   paginationLimit!: number;
 
-  constructor(private chatbotService : ChatbotService) { }
+  constructor(private chatbotService : ChatbotService, private userService : UserService) { }
 
   ngOnInit(): void {
 
-    // fase de greeting
+    // get user message and booking history
+
+    this.userService.getUserMessages().subscribe((messages) => {
+      this.conversations = messages;
+      console.log(this.conversations)
+    })
+
+    this.userService.getUserBookings().subscribe((bookings) => {
+      this.bookings = bookings;
+      console.log(this.bookings)
+    })
 
   }
 
@@ -46,27 +59,16 @@ export class ChatbotComponent implements OnInit {
 
     //adicionar mensagem do user à lista de mensagens da conversation
     if (this.message) {
-      let userMsg : Message = {msg : this.message, me : true}
+      let userMsg : Message = {msg : this.message, is_me : true, username : ''+localStorage.getItem('username'), type : 'normal'}
       this.conversations.push(userMsg);
     }
-    
-
-    // console.log("done")
-
-    // let botMsg : Message = {msg : message, me : false}
-    // console.log(botMsg)
-    // this.conversations.push(botMsg);
-
-    // console.log(this.conversations)
-
-    // this.message = "";
 
     this.chatbotService.sendMessage(this.message).subscribe((response) => {
 
       console.log(response)
 
       //adicionar mensagem do user à lista de mensagens da conversation
-      let botMsg : Message = {msg : response, me : false}
+      let botMsg : Message = {msg : response, is_me : false, username : ''+localStorage.getItem('username'), type : 'normal'}
       this.conversations.push(botMsg);
 
       console.log(botMsg)

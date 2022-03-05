@@ -1,0 +1,17 @@
+ <body>
+    <form method="POST">
+      <h1 style="align-items: center;">Spoton | Login</h1>
+      <hr/>
+      <div class="formcontainer">
+        <div class="container">
+          <label for="username"><strong>Username</strong></label>
+          <input type="text" id="username" name="username" placeholder="Insert your username" [(ngModel)]="username" (keyUp.enter)="login()" required>
+        </div>
+
+        <button type="submit" name="bttn" value="Submit" (click)='login()'>Login</button>
+      </div>
+    </form>
+
+
+
+

@@ -19,7 +19,7 @@
                         <ng-container *ngFor="let chat of conversations">
                            
                             <!-- Bot message -->
-                            <div class="direct-chat-msg" *ngIf="chat?.me == false">
+                            <div class="direct-chat-msg" *ngIf="chat?.is_me == false">
                                 <div class="direct-chat-info clearfix">
                                     <span class="direct-chat-name pull-left"> SpotonBot</span>
                                 </div>
@@ -106,7 +106,7 @@
                             </div>
 
                             <!-- My messages -->
-                            <div class="direct-chat-msg right" *ngIf="chat?.me">
+                            <div class="direct-chat-msg right" *ngIf="chat?.is_me">
                                 <img class="direct-chat-img" src="../../../assets/me.jpg"
                                     alt="Message User Image">
                                 <div class="direct-chat-text" style=" display: flex; justify-content: space-between; float: right;">

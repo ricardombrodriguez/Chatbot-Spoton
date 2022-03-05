@@ -15,17 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from app import views
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
-    #path('/', views.main_page),
+    path('admin/', admin.site.urls),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name="login"),
     path('message', views.message),
-    #path('flights', views.get_flights),
-    #path('flight', views.get_flight),
-    #path('city', views.get_city),
-    #path('flights_by_arrival', views.get_flights_by_arrival),
-    #path('flights_by_departure', views.get_flights_by_departure),
-    #path('flights_by_departure_arrival', views.get_flights_by_arr_dep),
-    #path('airports', views.get_airports),
+    path('user_messages', views.user_messages),
+    path('user_bookings', views.user_bookings),
+    path('identify_user', views.identify_user),
 ]

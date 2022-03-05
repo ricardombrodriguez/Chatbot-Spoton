@@ -1,30 +1,63 @@
-from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests
-from django.http import HttpResponse
 from app import responses
-
+from app.models import Booking, Message
+from app.serializers import BookingSerializer, MessageSerializer
 import json
 
 # GLOBAL VARIABLES
 API_KEY = "7dff77adf49dbf87535842af0ca96b20"    # access key to API 
-BASE_URL = 'http://api.aviationstack.com/v1/' 
+BASE_URL = 'http://api.aviationstack.com/v1/'
+username = ''
 
+@api_view(['GET'])
+def identify_user(request):
+    global username
+
+    print("IDENTIFY USER")
+    username = request.GET['username']
+    return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def message(request):
 
-    message = request.GET['msg']
-    print(message)
-    
-    bot_response = responses.generate_response(message)
+    global username
 
-    print(bot_response)
+    message = request.GET['msg']
+    user_msg_obj = Message(msg=message,is_me=True,type="normal",username=username)
+    user_msg_obj.save()
+
+    bot_response = responses.generate_response(message)
+    bot_msg_obj = Message(msg=bot_response, is_me=False, type="normal", username=username)
+    bot_msg_obj.save()
 
     return Response(bot_response)
+
+
+@api_view(['GET'])
+def user_messages(request):
+    username = request.GET['username']
+    try:
+        messages = Message.objects.filter(username=username)
+        print(messages)
+    except Message.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = MessageSerializer(messages, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def user_bookings(request):
+    username = request.GET['username']
+    try:
+        bookings = Booking.objects.get(username=username)
+    except Booking.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = BookingSerializer(bookings, many=True)
+    return Response(serializer.data)
 
 
 # ################################################# OBTER TODOS OS VOOS ########################################################
