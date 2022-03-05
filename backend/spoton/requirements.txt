@@ -1,0 +1,8 @@
+requests
+djangorestframework
+markdown
+django-filter
+django-cors-headers
+numpy
+nltk
+fasttext
