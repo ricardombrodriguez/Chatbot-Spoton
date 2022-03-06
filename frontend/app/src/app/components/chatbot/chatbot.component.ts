@@ -107,35 +107,19 @@ export class ChatbotComponent implements OnInit {
 
         let all_flights = response['body']['flights']
         let default_msg = response['body']['default_msg']
+
+        this.flights = all_flights;
         console.log(all_flights)
 
-        // this.flights = all_flights.map(item : any => { 
-        //   return new Flight(
-        //       item.flight_number,
-        //       item.artistName,
-        //       item.trackViewUrl,
-        //       item.artworkUrl30,
-        //       item.artistId
-        //   );
 
 
 
         botMsg = {body : default_msg, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
         this.carousel_flag = true
-        all_flights.forEach((k : any =>{
-          let new_f : Flight = {
-            flight_number : f["flight_iata"],
-            airline! : f["airline"],
-            departure! : f["dep_time"],
-            dep_airport! : f["dep_airport"],
-            arr_airport! : f["arr_airport"],
-            price! : f["price"]
-          }
-          this.flights.push(new_f) 
-        });
 
         console.log("flights")
-        console.log(this.flights);
+        console.log(this.flights[0].airline);
+
       } else {
         let body = response['body']
         botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}

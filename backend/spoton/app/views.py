@@ -9,7 +9,7 @@ import json
 import numpy
 
 # GLOBAL VARIABLES
-API_KEY = "2d735a1319fba8eb539c52a4ff51a129"    # access key to API 
+API_KEY = "cff3faca8452409590f861fe1969b13d"    # access key to API
 BASE_URL = 'http://api.aviationstack.com/v1/'
 username = ''
 
@@ -25,30 +25,21 @@ def identify_user(request):
 
 @api_view(['GET'])
 def message(request):
-
     global username
 
     message = request.GET['msg']
-    user_msg_obj = Message(msg=message,is_me=True,type="normal",username=username)
+    user_msg_obj = Message(body=message, is_me=True, tag="normal", username=username)
     user_msg_obj.save()
 
-<<<<<<< HEAD
-    # bot_response = responses.generate_response(message)
-    # bot_msg_obj = Message(msg=bot_response, is_me=False, type="normal", username=username)
-    # bot_msg_obj.save()
+    bot_response = json.loads(responses.generate_response(message,username))
 
-    bot_response = json.loads(responses.generate_response(message))
-   
-    bot_msg_obj = Message(msg=bot_response['body'], is_me=False, type=bot_response['tag'], username=username)
-=======
-    bot_response = responses.generate_response(message=message, username=username)
-    bot_msg_obj = Message(msg=bot_response['message'], is_me=False, type=bot_response['type'], username=username)
+    print("body")
+    print(bot_response['body'])
+
+    bot_msg_obj = Message(body=bot_response["body"], is_me=False, tag=bot_response["tag"], username=username)
+
     bot_msg_obj.save()
->>>>>>> 7e0918454537b5a9f19629dee47444c103a7a7d9
 
-    bot_msg_obj.save()  
-
-    print(bot_msg_obj, "sou o obj")
     print("sou o bot response 1", bot_response)
     return Response(bot_response)
 
