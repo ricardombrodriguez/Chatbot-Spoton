@@ -22,10 +22,7 @@ def parse_data(ft_model):
 
 
 def embed_sentence(sentence, ft_model):
-    import time
-    start_time = time.time()
     sentence_vec = ft_model.get_sentence_vector(sentence)
-    print("--- %s seconds ---" % (time.time() - start_time))
     return sentence_vec
 
 

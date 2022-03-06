@@ -24,6 +24,7 @@ export class ChatbotComponent implements OnInit {
   public lat:any;
   public lng:any;
   public coords:any;
+  airport: any;
 
   constructor(private chatbotService : ChatbotService, private userService : UserService, private locationService: LocationService) { }
 
@@ -50,11 +51,13 @@ export class ChatbotComponent implements OnInit {
     this.flights.push(f1)
     this.flights.push(f2)
 
-    // get user message and booking history
-    this.getLocation()
+  // get user message and booking history
+
+    sessionStorage.getItem('username')
 
     this.userService.getUserMessages().subscribe((messages) => {
       this.conversations = messages;
+      console.log("CONVERSATIONS")
       console.log(this.conversations)
     })
 
@@ -62,6 +65,8 @@ export class ChatbotComponent implements OnInit {
       this.bookings = bookings;
       console.log(this.bookings)
     })
+
+    this.getLocation()
 
   }
 
@@ -125,12 +130,13 @@ export class ChatbotComponent implements OnInit {
     this.locationService.getPosition().then(pos=> {
          this.lat = pos.lat
          this.lng = pos.lng
+         this.coords = {'latitude':this.lat,'longitude':this.lng}
          console.log(`Position: ${this.lat} ${this.lng}`);
     });
 
     // 
-    this.chatbotService.getAirports().subscribe((coords) => {
-      this.coords = coords;
+    this.locationService.getNearestAirport(this.coords).subscribe((airport) => {
+      this.airport = airport;
     })
 
     console.log(this.coords)

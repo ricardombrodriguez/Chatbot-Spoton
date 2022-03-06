@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class LocationService {
 
+  baseUrl = 'http://127.0.0.1:8000/';
+
   constructor(private http: HttpClient) { }
 
   getPosition(): Promise<any> {
@@ -22,4 +24,7 @@ export class LocationService {
 
   }
 
+  getNearestAirport(coords : any): Observable<any> {
+    return this.http.get<any>(this.baseUrl + 'nearest_airport?latitude=' + coords['latitude'] + '&longitude=' + coords['longitude']);
+  }
 }

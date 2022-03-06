@@ -3,12 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="0ece7246-899b-4bbe-a2eb-34dce4a95a92" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/NLP.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/NLP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/data_embedder.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/data_embedder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dataset.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/dataset.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/responses.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/responses.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/app/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/app/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/app/src/app/components/chatbot/chatbot.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/app/src/app/components/chatbot/chatbot.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/app/src/polyfills.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/app/src/polyfills.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spoton/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/spoton/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/app/src/app/components/chatbot/chatbot.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/app/src/app/components/chatbot/chatbot.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/app/src/app/services/location.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/app/src/app/services/location.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +89,8 @@
       <workItem from="1646452817167" duration="1146000" />
       <workItem from="1646475214818" duration="6833000" />
       <workItem from="1646493391241" duration="2130000" />
+      <workItem from="1646525258000" duration="5786000" />
+      <workItem from="1646532640368" duration="246000" />
     </task>
     <servers />
   </component>

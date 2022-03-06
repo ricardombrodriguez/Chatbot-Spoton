@@ -19,6 +19,7 @@ def identify_user(request):
 
     print("IDENTIFY USER")
     username = request.GET['username']
+    request.user.username = username
     return Response(status=status.HTTP_200_OK)
 
 
@@ -31,11 +32,7 @@ def message(request):
     user_msg_obj = Message(msg=message,is_me=True,type="normal",username=username)
     user_msg_obj.save()
 
-    # bot_response = responses.generate_response(message)
-    # bot_msg_obj = Message(msg=bot_response, is_me=False, type="normal", username=username)
-    # bot_msg_obj.save()
-
-    bot_response = responses.generate_response(message)
+    bot_response = responses.generate_response(message=message, username=username)
     bot_msg_obj = Message(msg=bot_response['message'], is_me=False, type=bot_response['type'], username=username)
     bot_msg_obj.save()
 
@@ -67,6 +64,8 @@ def user_bookings(request):
     return Response(serializer.data)
 
 
+# ########################## OBTER AEROPORTO MAIS PRÓXIMO DAS COORDENADAS DO UTILIZADOR (DISTÂNCIA EUCLIDIANA) ################################
+
 @api_view(['GET'])
 def get_nearest_airport(request):
 
@@ -88,7 +87,9 @@ def get_nearest_airport(request):
             nearest_aiport = airport
             nearest_distance = euclidean_distance
 
-    return Response(nearest_aiport)
+        response = {'type': 'nearest_airport', 'message': 'The nearest airport from you is ' + nearest_aiport}
+
+    return Response(response)
 
 
 # ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
