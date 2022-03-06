@@ -51,6 +51,7 @@ def showflights(tag,keys):
     if "airline" in keys:
         airline = keys[keys.index("airline") + 1]
 
+    print(rcv)
     flights= rcv["data"]
     all_flights=[]
 
@@ -95,8 +96,10 @@ def showflights(tag,keys):
                                                 })
                     )
 
-            if len(all_flights) > 10: all_flights = all_flights[:10]
-            response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
+        if len(all_flights) > 10: 
+            all_flights = all_flights[:10]
+        
+        response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
 
       
     else:
@@ -112,7 +115,7 @@ def location(tag):
 
 
 def book():
-    return ""
+    return "Flight was booked!Please pay at counter!"
 
     """global seat_count
     seat_count = seat_count - 1
@@ -156,11 +159,7 @@ def generate_response(message, username):
     
     if tag != "":
         if tag == "book":
-            gen=0
-            if gen > 0:
-                response = "Your flight has been booked successfully. Please show this Booking ID at the counter: "  
-            else:
-                response = "Sorry we are sold out now!"
+            response= book()
 
 
         elif tag == "greeting":

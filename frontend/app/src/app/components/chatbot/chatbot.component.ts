@@ -30,27 +30,6 @@ export class ChatbotComponent implements OnInit {
 
   ngOnInit(): void {
 
-    /* let f1 : Flight = {
-      flight_number : "TP2022",
-      airline! : "TAP",
-      departure! : "03-03-2022",
-      dep_airport! : "OPO",
-      arr_airport! : "LIS",
-      price! : 50
-    }
-
-    let f2 : Flight = {
-      flight_number : "TP2022",
-      airline! : "TAP",
-      departure! : "03-03-2022",
-      dep_airport! : "OPO",
-      arr_airport! : "LIS",
-      price! : 100
-    }
-
-    this.flights.push(f1)
-    this.flights.push(f2)
-    */
     // get user message and booking history
     this.getLocation()
 

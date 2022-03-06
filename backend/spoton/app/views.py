@@ -9,7 +9,7 @@ import json
 import numpy
 
 # GLOBAL VARIABLES
-API_KEY = "cff3faca8452409590f861fe1969b13d***"    # access key to API 
+API_KEY = "5f9c9bf3c7c6a95046e4df9ddcffff38"    # access key to API 
 BASE_URL = 'http://api.aviationstack.com/v1/'
 username = ''
 
@@ -29,7 +29,7 @@ def message(request):
     global username
 
     message = request.GET['msg']
-    user_msg_obj = Message(msg=message,is_me=True,type="normal",username=username)
+    user_msg_obj = Message(body=message,is_me=True,tag="normal",username=username)
     user_msg_obj.save()
 
     # bot_response = responses.generate_response(message)
@@ -38,7 +38,7 @@ def message(request):
 
     bot_response = json.loads(responses.generate_response(message,username))
    
-    bot_msg_obj = Message(msg=bot_response['body'], is_me=False, type=bot_response['tag'], username=username)
+    bot_msg_obj = Message(body=bot_response['body'], is_me=False, tag=bot_response['tag'], username=username)
 
     bot_msg_obj.save()  
 
