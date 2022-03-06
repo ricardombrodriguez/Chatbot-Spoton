@@ -5,6 +5,7 @@ import { ChatbotService } from 'src/app/services/chatbot.service';
 import { UserService } from 'src/app/services/user.service';
 import { LocationService } from 'src/app/services/location.service';
 import { Flight } from 'src/app/classes/flight';
+import { NumberSymbol } from '@angular/common';
 
 @Component({
   selector: 'app-chatbot',
@@ -17,6 +18,9 @@ export class ChatbotComponent implements OnInit {
   conversations : Message[] = [];
   bookings : Booking[] = [];
   flights : Flight[] = [];
+  current_flight: Flight[] = [];
+  rating:string="";
+  feedback: string="";
 
   startPage!: number;
   paginationLimit!: number;
@@ -25,7 +29,8 @@ export class ChatbotComponent implements OnInit {
   public lng:any;
   public coords:any;
   public carousel_flag: boolean = false;
-  public rating_flag: boolean=false;
+  public ratings_flag: boolean = false;
+  public fb_flag: boolean = false;
   public last: number = 0;
 
   constructor(private chatbotService : ChatbotService, private userService : UserService, private locationService: LocationService) { }
@@ -62,8 +67,8 @@ export class ChatbotComponent implements OnInit {
       //response is a dictionary
       let a_tag = response['tag']
       this.carousel_flag = false
-      this.rating_flag =false
-
+      this.ratings_flag = false
+      this.fb_flag = false
       //adicionar mensagem do user à lista de mensagens da conversation
       console.log("AQUI "+ response)
       let botMsg!: Message
@@ -99,7 +104,19 @@ export class ChatbotComponent implements OnInit {
           console.log(this.flights);
         }
 
-      } else {
+      } else if(a_tag == "book"){
+        let body = response['body']
+
+        this.ratings_flag = true
+        botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
+
+      }else if(a_tag == "feedback"){
+        let body = response['body']
+
+        this.fb_flag = true
+        botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
+
+      }else{
         let body = response['body']
         botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
       }

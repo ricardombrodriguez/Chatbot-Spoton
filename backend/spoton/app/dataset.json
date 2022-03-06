@@ -10,11 +10,12 @@
     "responses":["Goodbye and thank you for your preference" ]
     },
 
-     {
-    "tag":"ratings",
-    "patterns":["ratings"],
-    "responses":["Please rate our performance" ]
-    },
+    
+    {
+        "tag":"ratings",
+        "patterns":["Rate"],
+        "responses":[ ]
+        },
     
     {
     "tag":"feedback",
