@@ -116,7 +116,6 @@ export class ChatbotComponent implements OnInit {
           this.carousel_flag = true
 
           for (let i = 0; i < all_flights.length; i++) {
-            console.log("GANZA")
             let f = JSON.parse(all_flights[i]);
             console.log(f)
             let new_f : Flight = {

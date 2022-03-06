@@ -9,6 +9,8 @@ from app import NLP
 from app import classify
 from app.models import Help, Feedback
 
+sorted_by_second = []
+flightwithunique = []
 pricingdic={}
 pricetuple=[]
 seat_count = 50
@@ -25,7 +27,7 @@ def identify_intent(message):
 
 def showflights(tag,keys):
 
-    global pricingdic
+    global pricingdic, flightwithunique, sorted_by_second
 
     #find keys
     print(keys)
@@ -41,25 +43,17 @@ def showflights(tag,keys):
 
     # optional search filters
 
-    ascendent_order = None
-    if "price" in keys or "cost" in keys:
-        price_order = keys[keys.index("to") + 1]
-        ascendent_order = True if price_order == "ASC" else False if price_order == "DESC" else None
-
     date = None
     if "date" in keys:
-        date = keys[keys.index("to") + 1]
+        date = keys[keys.index("date") + 1]
 
     airline = None
     if "airline" in keys:
-        airline = keys[keys.index("to") + 1]
+        airline = keys[keys.index("airline") + 1]
 
     flights= rcv["data"]
-    print(len(flights))
-    print(flights)
-    print(rcv,"sou rcv")
-    flightwithunique=[]
     all_flights=[]
+
     if len(flights)>0:
         text= get_response(tag)
         for f in flights:
@@ -69,29 +63,32 @@ def showflights(tag,keys):
                 print(uniqueid)
                 if uniqueid not in pricingdic:
                     pricingdic[uniqueid]= random.randint(50,250)
+
                     pricetuple.append((uniqueid,pricingdic[uniqueid]))
                     flightwithunique.append((uniqueid,f))
                     sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
-                    
-                if date is not None and date not in f['departure']['scheduled']:
-                    continue
-                if airline is not None and airline not in f['airline']['name']:
-                    continue
-                
-                if ascendent_order == False:
-                    sorted_by_second = sorted_by_second.reverse()
 
-
+            sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
 
         for nf,p in sorted_by_second:
             for item in flightwithunique:
                 if nf == item[0]:
                     getf=item[1]
+
+                    if date is not None and date not in getf['departure']['scheduled']:
+                        print("date")
+                        continue
+
+                    if airline is not None and airline not in getf['airline']['name']:
+                        print(getf['airline']['name'])
+                        print("airline::: "+ airline)
+                        continue
+
                     all_flights.append( json.dumps({
                                                     "airline" :     getf["airline"]["name"],
                                                     "flight_iata" : getf["flight"]["iata"],
                                                     "dep_airport" : getf["departure"]["airport"],
-                                                    "dep_time" :    getf["departure"]["scheduled"], 
+                                                    "dep_time" :    getf["departure"]["scheduled"],
                                                     "arr_airport" : getf["arrival"]["airport"],
                                                     "arr_time" :    getf["arrival"]["scheduled"],
                                                     "price" :       str(pricingdic[nf])
@@ -100,7 +97,7 @@ def showflights(tag,keys):
 
             if len(all_flights) > 10: all_flights = all_flights[:10]
             response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
-                
+
       
     else:
         response = {"tag":tag,"body": {"flights":[], "default_msg":  "There are no current offers for the selected destinations :("} }

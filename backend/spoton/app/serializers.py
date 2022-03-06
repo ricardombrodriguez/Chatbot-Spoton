@@ -4,7 +4,7 @@ from rest_framework import serializers
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('id','msg','is_me','type','username','created_at')
+        fields = ('id','body','is_me','tag','username','created_at')
 
 
 class BookingSerializer(serializers.ModelSerializer):
