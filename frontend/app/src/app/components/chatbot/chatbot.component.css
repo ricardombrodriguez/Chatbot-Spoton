@@ -4,11 +4,25 @@
 }
 
 .row {
+    height: 100%;
     width: 80%;
     margin: auto;
     align-items: center;
 }
+.himself{
+    width: 300%;
+    height: 60%;
+    
 
+}
+.ticket{
+    
+    width: 64vw;
+    height: 60vh;
+    margin-left: 12%;
+    margin-right: 10%;
+
+}
 button {
     font-size: 20px;
     float: right;

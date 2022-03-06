@@ -1,10 +1,10 @@
 export class Message {
     
-    msg! : any;
+    body! : any;
     is_me!: boolean;
     username!: string;
-    type!: string;
+    tag!: string;
 
-    constructor(msg: string, is_me: boolean, username: string, type : string) {}
+    constructor(body: any, is_me: boolean, username: string, tag : string) {}
 
 }

@@ -23,6 +23,7 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+
 class Booking(models.Model):
     flight_id = models.CharField(max_length=1000)
     username = models.CharField(max_length=30)

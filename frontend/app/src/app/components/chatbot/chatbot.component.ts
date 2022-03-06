@@ -24,12 +24,13 @@ export class ChatbotComponent implements OnInit {
   public lat:any;
   public lng:any;
   public coords:any;
+  public carousel_flag: boolean = false;
 
   constructor(private chatbotService : ChatbotService, private userService : UserService, private locationService: LocationService) { }
 
   ngOnInit(): void {
 
-    let f1 : Flight = {
+    /* let f1 : Flight = {
       flight_number : "TP2022",
       airline! : "TAP",
       departure! : "03-03-2022",
@@ -49,7 +50,7 @@ export class ChatbotComponent implements OnInit {
 
     this.flights.push(f1)
     this.flights.push(f2)
-
+    */
     // get user message and booking history
     this.getLocation()
 
@@ -66,7 +67,7 @@ export class ChatbotComponent implements OnInit {
   }
 
   sendAutomaticMessage(bttn_id : number) {
-    switch(bttn_id) { 
+    /* switch(bttn_id) { 
       case 1: { 
         this.sendMessage("No flights right now :/")
         break; 
@@ -79,32 +80,74 @@ export class ChatbotComponent implements OnInit {
         //statements; 
         break; 
       } 
-   } 
+   } */ 
   }
 
-  sendMessage(message : string) {
+  sendMessage() {
 
     console.log("send message: " + this.message)
 
     //adicionar mensagem do user à lista de mensagens da conversation
     if (this.message) {
-      let userMsg : Message = {msg : this.message, is_me : true, username : ''+localStorage.getItem('username'), type : 'normal'}
+      let userMsg : Message = {body : this.message, is_me : true, username : ''+localStorage.getItem('username'), tag : 'normal'}
       this.conversations.push(userMsg);
     }
 
     this.chatbotService.sendMessage(this.message).subscribe((response) => {
 
       //response is a dictionary
-
-
-      //console.log(response)
+      let a_tag = response['tag']
+      this.carousel_flag = false
 
       //adicionar mensagem do user à lista de mensagens da conversation
-      let botMsg : Message = {msg : response["message"], is_me : false, username : ''+localStorage.getItem('username'), type : response["type"]}
+      console.log("AQUI "+ response)
+      let botMsg: Message
+
+      if (a_tag == "showflights") {
+
+        let all_flights = response['body']['flights']
+        let default_msg = response['body']['default_msg']
+        console.log(all_flights)
+
+        // this.flights = all_flights.map(item : any => { 
+        //   return new Flight(
+        //       item.flight_number,
+        //       item.artistName,
+        //       item.trackViewUrl,
+        //       item.artworkUrl30,
+        //       item.artistId
+        //   );
+
+
+
+        botMsg = {body : default_msg, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
+        this.carousel_flag = true
+        all_flights.forEach((k : any , f: any{
+          let new_f : Flight = {
+            flight_number : f["flight_iata"],
+            airline! : f["airline"],
+            departure! : f["dep_time"],
+            dep_airport! : f["dep_airport"],
+            arr_airport! : f["arr_airport"],
+            price! : f["price"]
+          }
+          this.flights.push(new_f) 
+        });
+
+        console.log("flights")
+        console.log(this.flights);
+      } else {
+        let body = response['body']
+        botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
+      }
+
+      console.log(botMsg)
+
+
       this.conversations.push(botMsg);
 
       //console.log(botMsg)
-      console.log(botMsg.type)
+      console.log(botMsg.tag)
 
       // reset do input
       this.message = "";
@@ -128,10 +171,10 @@ export class ChatbotComponent implements OnInit {
          console.log(`Position: ${this.lat} ${this.lng}`);
     });
 
-    // 
+/*     // 
     this.chatbotService.getAirports().subscribe((coords) => {
       this.coords = coords;
-    })
+    }) */
 
     console.log(this.coords)
     

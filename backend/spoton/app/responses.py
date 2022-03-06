@@ -37,7 +37,11 @@ def showflights(tag,keys):
     else:  
         rcv= views.get_flights()
     flights= rcv["data"]
+    print(len(flights))
+    print(flights)
+    print(rcv,"sou rcv")
     flightwithunique=[]
+    all_flights=[]
     if len(flights)>0:
         text= get_response(tag)
         for f in flights:
@@ -47,23 +51,34 @@ def showflights(tag,keys):
                 print(uniqueid)
                 if uniqueid not in pricingdic:
                     pricingdic[uniqueid]= random.randint(50,250)
-                    pricetuple.append((uniqueid,pricingdic[uniqueid]))
-                    flightwithunique.append((uniqueid,f))
-                    sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
+                pricetuple.append((uniqueid,pricingdic[uniqueid]))
+                flightwithunique.append((uniqueid,f))
+                sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
         for nf,p in sorted_by_second:
             for item in flightwithunique:
                 if nf== item[0]:
                     getf=item[1]
-                    build_response_json= {"tag":tag, "body":{"default_msg":text,"airline":getf["airline"]["name"],"flight_iata":getf["flight"]["iata"],"dep_airport":getf["departure"]["airport"],"dep_time":getf["departure"]["scheduled"], "arr_airport":getf["arrival"]["airport"],"arr_time":getf["arrival"]["scheduled"],"price":str(pricingdic[nf])}}
-                    response = json.dumps(build_response_json)       
+                    all_flights.append( json.dumps({
+                                                    "airline" :     getf["airline"]["name"],
+                                                    "flight_iata" : getf["flight"]["iata"],
+                                                    "dep_airport" : getf["departure"]["airport"],
+                                                    "dep_time" :    getf["departure"]["scheduled"], 
+                                                    "arr_airport" : getf["arrival"]["airport"],
+                                                    "arr_time" :    getf["arrival"]["scheduled"],
+                                                    "price" :       str(pricingdic[nf])
+                                                })
+                    )
+            response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
+                
+      
     else:
         response = {"tag":tag,"body":"Sorry there are no offers available now."}
     return response
 
 
 
-def location():
-    text="are you in brazil aakakkaka"
+def location(tag):
+    response="are you in brazil aakakkaka"
     return response
 
 
@@ -81,16 +96,16 @@ def book():
 
 
 #this fucntion show create a request that connects user to an agent
-def request_human():
-    return "blhis"
+def default_message_builder(tag, resp):
+    build_json={"tag":tag, "body":resp}
+    return build_json
     
 def funcionalities(tag):
     response =get_response(tag)
-    return response 
+    return default_message_builder(tag,response)
 def show_menu(tag):
-    response = funcionalities(tag)
-
-    return response
+    
+    return funcionalities(tag)
 
 
 
@@ -155,6 +170,7 @@ def generate_response(message):
                 response=random.choice(responses)
                 feedback=True
 
+
         elif tag == "showflights":
             #devolve um array pos 0 msg de texto pos 1 msg de 
             msg= message.split(' ')
@@ -163,14 +179,14 @@ def generate_response(message):
                 response= "Please input a city after to/from "
             else:
                 response = showflights(tag,keys)
-            
+                return json.dumps(response)
 
         elif tag == "location":
-            response = location()
+            response = location(tag)
 
         elif tag == "human_request":
             response =get_response(tag)
-            response += request_human()
+            
 
         elif tag == "menu":
             response = show_menu(tag)
@@ -188,10 +204,9 @@ def generate_response(message):
                        
         # for other intents with pre-defined responses that can be pulled from dataset
         else:
-            print("foi aqui")
             response = get_response(tag)
     else:
         response = "Sorry! I didn't get it, please try to be more precise."
 
-    response = {'type': tag, 'message' : response }
-    return response
+    response = {'tag': tag, 'body' : response }
+    return json.dumps(response)

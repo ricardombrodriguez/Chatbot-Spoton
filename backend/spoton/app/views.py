@@ -8,7 +8,7 @@ from app.serializers import BookingSerializer, MessageSerializer
 import json
 
 # GLOBAL VARIABLES
-API_KEY = "dfe729ad8d796a40a6647d019d80b3b7"    # access key to API 
+API_KEY = "2d735a1319fba8eb539c52a4ff51a129"    # access key to API 
 BASE_URL = 'http://api.aviationstack.com/v1/'
 username = ''
 
@@ -34,12 +34,14 @@ def message(request):
     # bot_msg_obj = Message(msg=bot_response, is_me=False, type="normal", username=username)
     # bot_msg_obj.save()
 
-    bot_response = responses.generate_response(message)
-    bot_msg_obj = Message(msg=bot_response['message'], is_me=False, type=bot_response['type'], username=username)
-    bot_msg_obj.save()
+    bot_response = json.loads(responses.generate_response(message))
+   
+    bot_msg_obj = Message(msg=bot_response['body'], is_me=False, type=bot_response['tag'], username=username)
 
-    print(bot_response)
+    bot_msg_obj.save()  
 
+    print(bot_msg_obj, "sou o obj")
+    print("sou o bot response 1", bot_response)
     return Response(bot_response)
 
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from 'rxjs';
+import { Message } from '../classes/message';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class ChatbotService {
 
   constructor(private http: HttpClient) { }
 
-  sendMessage(message:string): Observable<any> {
-    return this.http.get<any>(this.baseUrl + 'message?msg=' + message);
+  sendMessage(message:string): Observable<Message> {
+    return this.http.get<Message>(this.baseUrl + 'message?msg=' + message);
   }
 
 }

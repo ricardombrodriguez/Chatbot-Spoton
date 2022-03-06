@@ -1,43 +1,20 @@
 <div class="row">
 
-    <div class="col-md-7">
-        <div class="panel panel-default">
+    <!-- <div class="col-md-12"> -->
+        <!-- <div class="panel panel-default"> -->
             <!-- <app-leaflet-map></app-leaflet-map> -->
             <!-- <app-map></app-map> -->
-        </div>
-    </div>
+        <!-- </div> -->
+    <!-- </div> -->
 
-    <div class="col-md-5">
+    <div class="col-md-12">
         <div class="panel panel-default">
 
             <div class="box box-success direct-chat direct-chat-success">
 
-                <ngb-carousel >
-                    <ng-template ngbSlide *ngFor="let flight of flights">
-
-                        <app-ticket [flight]="flight"></app-ticket>
-                    </ng-template>
-                    <ng-template ngbSlide>
-
-                      <div class="carousel-caption">
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                      </div>
-                    </ng-template>
-                    <ng-template ngbSlide>
-
-                      <div class="carousel-caption">
-                        <h3>Third slide label</h3>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                      </div>
-                    </ng-template>
-                  </ngb-carousel>
-
-                <div class="box-body">
+                <div class="box-body" >
                     <!-- Conversations are loaded here -->
                     <div class="direct-chat-messages" >
-
-                        
 
                         <ng-container *ngFor="let chat of conversations">
                            
@@ -50,18 +27,28 @@
                                     alt="Message User Image"><!-- /.direct-chat-img -->
 
                                 <div class="direct-chat-text" style=" display: flex; justify-content: space-between;">
-
-                                    {{chat?.msg}}
-
-                                
+                                    <div style="margin: 0 0 20 0">
+                                    {{chat?.body}}
+                                    </div>
+                                    
+                                    <ngb-carousel *ngIf="carousel_flag">
+                                        <ng-template ngbSlide *ngFor="let flight of flights" >
+                                            <div class="ticket" style="display:flex">
+                                                
+                                                <app-ticket [flight]="flight" class="himself"></app-ticket>
+                                                <!-- <app-ticket [flight]="flight" class="himself"></app-ticket> -->
+                                            </div>
+                                        </ng-template>
+                    
+                                    </ngb-carousel>
 
                                     <!-- CHECK IF BOT ANSWER CONTAINS MORE THAN 1 MESSAGE -->
-                                    <div *ngIf="(chat?.msg?.answer)?.length > 1; else default_or_dialogflow_message ">
+                                    <div *ngIf="(chat?.body?.answer)?.length > 1; else default_or_dialogflow_message ">
 
                                     
 
                                         <!-- DISPLAY SHOW MORE SHOW LESS BUTTONS IF MORE RESULTS ARE RETURNED -->
-                                        <button class="btn-sm btn-default" style="border-radius: 12px; margin-right:5px;" *ngIf=" paginationLimit < (chat.msg.answer).length" (click)="showMore()">
+                                        <button class="btn-sm btn-default" style="border-radius: 12px; margin-right:5px;" *ngIf=" paginationLimit < (chat.body.answer).length" (click)="showMore()">
                                             Show More
                                         </button>
                                         <button class="btn-sm btn-default" style="border-radius: 12px;" *ngIf="paginationLimit > 3" (click)="showLess()">
@@ -74,9 +61,9 @@
                                     <ng-template #default_or_dialogflow_message>
 
                                         <!-- DISPLAY WELCOME MESSAGE AT RENDER PAGE -->
-                                        {{ chat.msg[0]?.answer }}
+                                        {{ chat.body?.answer }}
 
-                                        <div *ngFor="let result of chat?.msg?.answer" [ngSwitch]="result._type">
+                                        <div *ngFor="let result of chat?.body?.answer" [ngSwitch]="result._type">
 
                                             <!-- CHECK IF BOT RETURN RESULT FOUND IN 'restaurant' INDEX -->
                                             <div class="clearfix" *ngSwitchCase="'rest'">
@@ -111,7 +98,7 @@
                                 <img class="direct-chat-img" src="../../../assets/me.jpg"
                                     alt="Message User Image">
                                 <div class="direct-chat-text" style=" display: flex; justify-content: space-between; float: right;">
-                                    {{chat?.msg}}
+                                    {{chat?.body}}
                                 </div>
                             </div>
 
@@ -121,16 +108,16 @@
 
                 </div>
 
-                <div>
+               <!--  <div>
                     <button type="button" class="btn btn-success"  (click)="sendAutomaticMessage(1)"> Show Flights </button>
                     <button type="button" class="btn btn-success"  (click)="getLocation()"> Send my location </button>
-                </div>
+                </div> -->
 
                 <div class="box-footer">
                     <div class="input-group">
-                        <input type="text" name="message" (keyup.enter)="sendMessage('estieidreads')" [(ngModel)]="message" placeholder="Type message" class="form-control">
+                        <input type="text" name="message" (keyup.enter)="sendMessage()" [(ngModel)]="message" placeholder="Type message" class="form-control">
                         <span class="input-group-btn">
-                            <button (click)="sendMessage('estieidreads')" class="btn btn-default btn-flat">Send</button>
+                            <button (click)="sendMessage()" class="btn btn-default btn-flat">Send</button>
                         </span>
                     </div>
                 </div>
