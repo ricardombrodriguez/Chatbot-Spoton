@@ -6,7 +6,7 @@ stop_words = ['the', 'you', 'i', 'are', 'is', 'a', 'me', 'can', 'this', 'your', 
               'could', 'please', 'it', 'with', 'here', 'if', 'my', 'am', 'what']
 
 # words important for fetching data
-keywords = ['to','from','price','cost','airline','date']
+keywords = ['to','from','cheap','low-cost','affordable','economic','low-price','low','price','cost','economical','date','airline']
 
 # lemmatizing is grouping similar forms of representing a word so they can be analyzed as a single item, avoiding ambiguity
 def lemmatize_sentence(tokens):

@@ -267,11 +267,11 @@ input {
     border-left-color: #00c0ef;
 }
 .direct-chat-success .right>.direct-chat-text {
-    background: rgb(52, 160, 19);
-    border-color: rgb(52, 160, 19);
+    background: #5888c6;
+    border-color: #5888c6;
     color: #fff;
 }
 .direct-chat-success .right>.direct-chat-text:after, .direct-chat-success .right>.direct-chat-text:before {
-    border-left-color: rgb(52, 160, 19);
+    border-left-color: #5888c6
 }
                  

@@ -1,17 +1,20 @@
- <body>
-    <form method="POST">
-      <h1 style="align-items: center;">Spoton | Login</h1>
-      <hr/>
-      <div class="formcontainer">
-        <div class="container">
-          <label for="username"><strong>Username</strong></label>
-          <input type="text" id="username" name="username" placeholder="Insert your username" [(ngModel)]="username" (keyUp.enter)="login()" required>
-        </div>
-
-        <button type="submit" name="bttn" value="Submit" (click)='login()'>Login</button>
-      </div>
+<div class="login-page">
+  <div class="form">
+    <h6> Welcome to </h6>
+    <h2> <strong> SpotOn </strong> </h2>
+    <div style="height:10px"></div>
+    <!-- <form class="register-form">
+      <input type="text" placeholder="name"/>
+      <input type="password" placeholder="password"/>
+      <input type="text" placeholder="email address"/>
+      <button>create</button>
+      <p class="message">Already registered? <a href="#">Sign In</a></p>
+    </form> -->
+    <form class="login-form">
+      <input type="text" placeholder="username" [(ngModel)]="username" (keyUp.enter)="login()" required/>
+      <button (click)="login()" routerLink="/chat"><strong>login</strong></button>
     </form>
-
-
+  </div>
+</div>
 
 

@@ -36,6 +36,7 @@ def showflights(tag,keys):
     elif "to" in keys:
         rcv=views.get_flights_by_arrival(keys[keys.index("to")+1])
     else:  
+    
         rcv= views.get_flights()
 
     # optional search filters
@@ -163,7 +164,7 @@ def generate_response(message, username):
         elif tag == "goodbye":#???
             
             if feedback:
-                response = "Before leaving can you please rate the service by sending a number between 0-10"
+                response = "Before leaving can you please rate the service by sending a number between 0-5"
             else :
                 response= get_response(tag)
 

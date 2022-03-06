@@ -51,7 +51,26 @@ export class ChatbotComponent implements OnInit {
     })
 
   }
+  getLocation() {
+    this.locationService.getPosition().then(pos=> {
+         this.lat = pos.lat
+         this.lng = pos.lng
+         this.coords = {'latitude':this.lat,'longitude':this.lng}
+         console.log(`Position: ${this.lat} ${this.lng}`);
+    });
+  }
 
+  getNearbyAirport () {
+    this.locationService.getNearestAirport(this.coords).subscribe((response) => {
+
+      let userMsg : Message = {body : 'Get nearest airport from my current location', is_me : true, username : ''+localStorage.getItem('username'), tag : "normal"}
+      this.conversations.push(userMsg)
+
+      let botMsg : Message = {body : 'The nearest airport from you is ' + response, is_me : false, username : ''+localStorage.getItem('username'), tag : "normal"}
+      this.conversations.push(botMsg)
+      console.log(response)
+    }) }
+  
   sendAutomaticMessage(bttn_id : number) {
     /* switch(bttn_id) { 
       case 1: { 
@@ -70,6 +89,8 @@ export class ChatbotComponent implements OnInit {
   }
 
   sendMessage() {
+
+    this.flights = []
 
     console.log("send message: " + this.message)
 
@@ -124,7 +145,7 @@ export class ChatbotComponent implements OnInit {
 
       } else if(a_tag == "book"){
         let body = response['body']
-
+ 
         this.ratings_flag = true
         botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
 
@@ -163,21 +184,15 @@ export class ChatbotComponent implements OnInit {
     this.paginationLimit = Number(this.paginationLimit) - 3;
   }
 
-  getLocation() {
-    this.locationService.getPosition().then(pos=> {
-         this.lat = pos.lat
-         this.lng = pos.lng
-         console.log(`Position: ${this.lat} ${this.lng}`);
-    });
+  
 
 /*     // 
     this.chatbotService.getAirports().subscribe((coords) => {
       this.coords = coords;
     }) */
 
-    console.log(this.coords)
+    
     
   }
 
 
-}

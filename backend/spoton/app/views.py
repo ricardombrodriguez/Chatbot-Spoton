@@ -9,7 +9,7 @@ import json
 import numpy
 
 # GLOBAL VARIABLES
-API_KEY = "5f9c9bf3c7c6a95046e4df9ddcffff38"    # access key to API 
+API_KEY = "723aba823e2308bdaa21430ea6efa485"    # access key to API 
 BASE_URL = 'http://api.aviationstack.com/v1/'
 username = ''
 
@@ -93,10 +93,7 @@ def get_nearest_airport(request):
             nearest_aiport = airport
             nearest_distance = euclidean_distance
 
-        response = {'type': 'nearest_airport', 'message': 'The nearest airport from you is ' + nearest_aiport}
-
-    return Response(response)
-
+    return Response(nearest_aiport)
 
 # ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
 def get_airports():

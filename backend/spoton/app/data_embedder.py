@@ -33,7 +33,7 @@ def load_embedding_model():
 def write_embedded_data(data):
     json_object = json.dumps(data, indent=4)
 
-    with open("embedded_data.json", "w") as outfile:
+    with open("app/embedded_data.json", "w") as outfile:
         outfile.write(json_object)
 
 
