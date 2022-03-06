@@ -96,12 +96,9 @@ def showflights(tag,keys):
                                                 })
                     )
 
-        if not all_flights:
-            response = {"tag":tag,"body": {"flights":[], "default_msg":  "There are no current offers for the selected destinations :("} }
-        else:
-            if len(all_flights) > 10:
-                all_flights = all_flights[:10]
-            response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
+        response = {"tag": tag, "body": {"flights": all_flights, "default_msg": text}}
+    else:
+        response = {"tag":tag,"body": {"flights":[], "default_msg":  "There are no current offers for the selected destinations :("} }
 
     return response
 

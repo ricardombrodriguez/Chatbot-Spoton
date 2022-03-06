@@ -5,11 +5,11 @@
 
             <div class="box box-success direct-chat direct-chat-success">
 
-                <div class="box-body" style = "height: 540px;">
+                <div class="box-body" style = "height: 800px; ">
                     <!-- Conversations are loaded here -->
-                    <div class="direct-chat-messages" >
+                    <div class="direct-chat-messages">
 
-                        <ng-container *ngFor="let chat of conversations">
+                        <ng-container *ngFor="let chat of conversations; let i = index; first as isFirst; last as isLast">
                            
                             <!-- Bot message -->
                             <div class="direct-chat-msg" *ngIf="chat?.is_me == false">
@@ -22,35 +22,39 @@
                                     <div class="direct-chat-text" style="display: flex; justify-content: space-between; float: left; background-color: rgb(232, 232, 236);">
                                     
                                     {{chat?.body}}
-                                    
+
+        
+
                                 </div>
                             </div>
 
-                            <div style="margin-left:5%;width: 90%;" >
-                                        
-                                    
-                                <ngb-carousel *ngIf="carousel_flag" >
-                                    <ng-template ngbSlide *ngFor="let flight of flights" >
-                                        <div class="ticket" style="display:flex; ">
-                                            
-                                            <app-ticket [flight]="flight" class="himself"></app-ticket>
-
-                                        </div>
-                                    </ng-template>
-                
-                                </ngb-carousel>
-                            </div>
-
+                        
                             <!-- My messages -->
                             <div class="direct-chat-msg right" *ngIf="chat?.is_me">
                                 <img class="direct-chat-img" src="../../../assets/me.jpg"
                                     alt="Message User Image">
                                 <div class="direct-chat-text" style=" display: flex; justify-content: space-between; float: right;">
                                     {{chat?.body}}
+
+                                    
                                 </div>
                             </div>
 
                         </ng-container>
+                        <div style="margin-left:5%; width: 90%;" >
+                                        
+                                    
+                            <ngb-carousel *ngIf="carousel_flag">
+                                <ng-template ngbSlide *ngFor="let flight of flights" >
+                                    <div class="ticket" style="display:flex; ">
+                                        
+                                        <app-ticket [flight]="flight" class="himself"></app-ticket>
+
+                                    </div>
+                                </ng-template>
+            
+                            </ngb-carousel>
+                        </div>
 
                     </div>
 

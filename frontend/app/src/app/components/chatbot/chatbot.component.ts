@@ -16,7 +16,7 @@ export class ChatbotComponent implements OnInit {
   @Input() message!: string;
   conversations : Message[] = [];
   bookings : Booking[] = [];
-  flights : Flight[] = []; 
+  flights : Flight[] = [];
 
   startPage!: number;
   paginationLimit!: number;
@@ -26,6 +26,7 @@ export class ChatbotComponent implements OnInit {
   public coords:any;
   public carousel_flag: boolean = false;
   public rating_flag: boolean=false;
+  public last: number = 0;
 
   constructor(private chatbotService : ChatbotService, private userService : UserService, private locationService: LocationService) { }
 
@@ -76,10 +77,27 @@ export class ChatbotComponent implements OnInit {
 
         this.flights = all_flights;
 
-        console.log(this.flights)
+        if (all_flights.length != 0) {
 
-        botMsg = {body : default_msg, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
-        this.carousel_flag = true
+          this.carousel_flag = true
+
+          for (let i = 0; i < all_flights.length; i++) {
+            let f = JSON.parse(all_flights[i]);
+            console.log(f)
+            let new_f : Flight = {
+              flight_number : f.flight_iata,
+              airline! : f["airline"],
+              departure! : f["dep_time"],
+              dep_airport! : f["dep_airport"],
+              arr_airport! : f["arr_airport"],
+              price! : f["price"]
+            }
+            this.flights.push(new_f)
+          }
+
+          console.log("flights")
+          console.log(this.flights);
+        }
 
       } else {
         let body = response['body']
@@ -87,6 +105,7 @@ export class ChatbotComponent implements OnInit {
       }
 
       this.conversations.push(botMsg);
+      this.last = this.last + 1 
 
       // reset do input
       this.message = "";
