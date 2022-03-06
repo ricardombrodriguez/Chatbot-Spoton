@@ -122,7 +122,7 @@ export class ChatbotComponent implements OnInit {
 
         botMsg = {body : default_msg, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
         this.carousel_flag = true
-        all_flights.forEach((k : any , f: any{
+        all_flights.forEach((k : any =>{
           let new_f : Flight = {
             flight_number : f["flight_iata"],
             airline! : f["airline"],

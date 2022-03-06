@@ -15,7 +15,7 @@
     {
     "tag":"feedback",
     "patterns":["0","1","2","3","4","5","6","7","8","9","10"],
-    "responses":["Thank you!", "Thank you so much for your valuable feedback. We deeply regret the inconvenience and hope to do better the next time! " ]
+    "responses":["Thank you so much for your valuable feedback. We appreciate your positive feedback! ", "Thank you so much for your valuable feedback. We deeply regret the inconvenience and hope to do better the next time! " ]
     },
     {"tag": "human_request",
         "patterns":["Can i talk to a human", "get me an agent","can i talk to staff", "Request human", "Request agent"],
@@ -25,7 +25,7 @@
 
     {
     "tag": "showflights",
-    "patterns": ["Show flights", "flights", "flight to", "flights from", "flight from", "flights to"],
+    "patterns": ["Show flights", "flights", "flight to", "flights from", "flight from", "flights to", "search flights"],
     "responses":["There you go","These are the flights I found"]
     },
   

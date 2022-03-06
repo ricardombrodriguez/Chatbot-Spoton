@@ -25,5 +25,5 @@ urlpatterns = [
     path('user_messages', views.user_messages),
     path('user_bookings', views.user_bookings),
     path('identify_user', views.identify_user),
-    path('airports', views.get_airports),
+    path('nearest_airport', views.get_nearest_airport)
 ]

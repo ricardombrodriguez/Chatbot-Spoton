@@ -7,3 +7,4 @@ numpy
 nltk
 fasttext
 httplib2
+django-request

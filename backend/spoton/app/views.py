@@ -6,6 +6,7 @@ from app import responses
 from app.models import Booking, Message
 from app.serializers import BookingSerializer, MessageSerializer
 import json
+import numpy
 
 # GLOBAL VARIABLES
 API_KEY = "2d735a1319fba8eb539c52a4ff51a129"    # access key to API 
@@ -18,6 +19,7 @@ def identify_user(request):
 
     print("IDENTIFY USER")
     username = request.GET['username']
+    request.user.username = username
     return Response(status=status.HTTP_200_OK)
 
 
@@ -30,6 +32,7 @@ def message(request):
     user_msg_obj = Message(msg=message,is_me=True,type="normal",username=username)
     user_msg_obj.save()
 
+<<<<<<< HEAD
     # bot_response = responses.generate_response(message)
     # bot_msg_obj = Message(msg=bot_response, is_me=False, type="normal", username=username)
     # bot_msg_obj.save()
@@ -37,6 +40,11 @@ def message(request):
     bot_response = json.loads(responses.generate_response(message))
    
     bot_msg_obj = Message(msg=bot_response['body'], is_me=False, type=bot_response['tag'], username=username)
+=======
+    bot_response = responses.generate_response(message=message, username=username)
+    bot_msg_obj = Message(msg=bot_response['message'], is_me=False, type=bot_response['type'], username=username)
+    bot_msg_obj.save()
+>>>>>>> 7e0918454537b5a9f19629dee47444c103a7a7d9
 
     bot_msg_obj.save()  
 
@@ -66,6 +74,49 @@ def user_bookings(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = BookingSerializer(bookings, many=True)
     return Response(serializer.data)
+
+
+# ########################## OBTER AEROPORTO MAIS PRÓXIMO DAS COORDENADAS DO UTILIZADOR (DISTÂNCIA EUCLIDIANA) ################################
+
+@api_view(['GET'])
+def get_nearest_airport(request):
+
+    latitude = request.GET['latitude']
+    longitude = request.GET['longitude']
+    user_coords = numpy.array((float(latitude),float(longitude)))
+    airports_coords = get_airports()
+
+    nearest_aiport = ''
+    nearest_distance = 1000000
+
+    for airport,coords in airports_coords.items():
+        if coords[0] is None or coords[1] is None:
+            continue
+        airport_coords = numpy.array((float(coords[0]),float(coords[1])))
+
+        euclidean_distance = numpy.linalg.norm(user_coords-airport_coords)
+        if euclidean_distance < nearest_distance:
+            nearest_aiport = airport
+            nearest_distance = euclidean_distance
+
+        response = {'type': 'nearest_airport', 'message': 'The nearest airport from you is ' + nearest_aiport}
+
+    return Response(response)
+
+
+# ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
+def get_airports():
+    # get all airports on only one page
+    url = BASE_URL + 'airports?access_key=' + API_KEY + '&limit=100000'
+
+    resp = requests.get(url=url)
+    data = resp.json()
+    airports = data['data']
+
+    # dictionary of all airports and their respective geographic coordinates
+    coords_airports = {airport['airport_name']: (airport['latitude'], airport['longitude']) for airport in airports}
+
+    return coords_airports
 
 
 # ################################################# OBTER TODOS OS VOOS ########################################################
@@ -172,22 +223,6 @@ def get_cities():
     all_cities = data['data']
     return { city['city_name'] : city['iata_code'] for city in all_cities }
 
-
-# ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
-@api_view(['GET'])
-def get_airports(request):
-    
-    # get all airports on only one page
-    url = BASE_URL + 'airports?access_key='+ API_KEY +'&limit=100000'
-
-    resp = requests.get(url=url)
-    data = resp.json()
-    airports = data['data']
-    
-    # dictionary of all airports and their respective geographic coordinates
-    coords_airports = { airport['airport_name'] : (airport['latitude'], airport['longitude']) for airport in airports }
-
-    return Response(coords_airports)
 
 
     

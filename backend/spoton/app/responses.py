@@ -1,19 +1,19 @@
 from enum import unique
 import json
-import random
-import datetime
 from urllib import response
-import uuid
+import request
 import random
 from django import views
 from app import views
-from httplib2 import Response
 from app import NLP
 from app import classify
+from app.models import Help, Feedback
+
 pricingdic={}
 pricetuple=[]
 seat_count = 50
 feedback= False
+
 with open("app/dataset.json") as file:
     data = json.load(file)
 
@@ -24,7 +24,9 @@ def identify_intent(message):
     return tag
 
 def showflights(tag,keys):
+
     global pricingdic
+
     #find keys
     print(keys)
     #ver o caso
@@ -36,6 +38,22 @@ def showflights(tag,keys):
         rcv=views.get_flights_by_arrival(keys[keys.index("to")+1])
     else:  
         rcv= views.get_flights()
+
+    # optional search filters
+
+    ascendent_order = None
+    if "price" in keys or "cost" in keys:
+        price_order = keys[keys.index("to") + 1]
+        ascendent_order = True if price_order == "ASC" else False if price_order == "DESC" else None
+
+    date = None
+    if "date" in keys:
+        date = keys[keys.index("to") + 1]
+
+    airline = None
+    if "airline" in keys:
+        airline = keys[keys.index("to") + 1]
+
     flights= rcv["data"]
     print(len(flights))
     print(flights)
@@ -54,9 +72,27 @@ def showflights(tag,keys):
                 pricetuple.append((uniqueid,pricingdic[uniqueid]))
                 flightwithunique.append((uniqueid,f))
                 sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
+
+                    if date is not None and date not in f['departure']['scheduled']:
+                        continue
+
+                    if airline is not None and airline not in f['airline']['name']:
+                        continue
+
+                    price = random.randint(50,250)
+                    pricingdic[uniqueid]= price
+                    pricetuple.append((uniqueid,pricingdic[uniqueid]))
+                    flightwithunique.append((uniqueid,f))
+
+                    sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
+                    if ascendent_order == False:
+                        sorted_by_second = sorted_by_second.reverse()
+
+
+
         for nf,p in sorted_by_second:
             for item in flightwithunique:
-                if nf== item[0]:
+                if nf == item[0]:
                     getf=item[1]
                     all_flights.append( json.dumps({
                                                     "airline" :     getf["airline"]["name"],
@@ -73,6 +109,7 @@ def showflights(tag,keys):
       
     else:
         response = {"tag":tag,"body":"Sorry there are no offers available now."}
+
     return response
 
 
@@ -108,15 +145,6 @@ def show_menu(tag):
     return funcionalities(tag)
 
 
-
-
-
-
-#def record_feedback(message, type):
-#    feedback_doc = {"feedback_string": message, "type": type}
-#    feedback_collection.insert_one(feedback_doc)
-
-
 # sends random response after identifying the tag
 def get_response(tag):
     for intent in data['intents']:
@@ -126,7 +154,8 @@ def get_response(tag):
     return response
 
 #asd
-def generate_response(message):
+def generate_response(message, username):
+
 
     # identify the appropriate tag and sent the correct response (type + message)
 
@@ -153,25 +182,36 @@ def generate_response(message):
                 response= get_response(tag)
 
         elif tag == "feedback":
+
             for intent in data['intents']:
                 if intent['tag'] == tag:
                     responses = intent['responses']
            
-            try:
-                rating= int(message)
-                if rating<5:
-                    response= responses[1]
-                    
-                else:
-                    response= responses[0]
-                
-                feedback=True
-            except:
-                response=random.choice(responses)
-                feedback=True
+
+            rating = int(message)
+
+            if rating >= 6 and rating <= 10:
+                print("positive")
+                feedback = True
+                response = responses[0]
+
+            elif rating > 0 and rating < 6:
+                feedback = True
+                response = responses[1]
+
+            else:
+                response = "Invalid type of feedback. Please review me from 1-10."
+                feedback = False
+
+            # save feedback to analyse the overall performance of the bot
+            if feedback:
+                print("saved")
+                feedback_obj = Feedback(username=username,rating=rating);
+                feedback_obj.save()
 
 
         elif tag == "showflights":
+
             #devolve um array pos 0 msg de texto pos 1 msg de 
             msg= message.split(' ')
             keys = NLP.findkeys(msg)
@@ -185,15 +225,21 @@ def generate_response(message):
             response = location(tag)
 
         elif tag == "human_request":
-            response =get_response(tag)
-            
+
+            # save help so that humans can read who is asking for help
+            help = Help(username=username);
+            help.save()
+            response = get_response(tag)
 
         elif tag == "menu":
             response = show_menu(tag)
+
         elif tag== "showagain":
-            response =get_response(tag)
+            response = get_response(tag)
+
         elif tag=="funcionalities":
             response = funcionalities(tag)
+
         elif tag == "details":
             
             response = get_response(tag)
