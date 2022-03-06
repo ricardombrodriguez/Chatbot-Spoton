@@ -30,27 +30,6 @@ export class ChatbotComponent implements OnInit {
 
   ngOnInit(): void {
 
-    /* let f1 : Flight = {
-      flight_number : "TP2022",
-      airline! : "TAP",
-      departure! : "03-03-2022",
-      dep_airport! : "OPO",
-      arr_airport! : "LIS",
-      price! : 50
-    }
-
-    let f2 : Flight = {
-      flight_number : "TP2022",
-      airline! : "TAP",
-      departure! : "03-03-2022",
-      dep_airport! : "OPO",
-      arr_airport! : "LIS",
-      price! : 100
-    }
-
-    this.flights.push(f1)
-    this.flights.push(f2)
-    */
     // get user message and booking history
     this.getLocation()
 
@@ -64,23 +43,6 @@ export class ChatbotComponent implements OnInit {
       console.log(this.bookings)
     })
 
-  }
-
-  sendAutomaticMessage(bttn_id : number) {
-    /* switch(bttn_id) { 
-      case 1: { 
-        this.sendMessage("No flights right now :/")
-        break; 
-      } 
-      case 2: { 
-        this.sendMessage("Where you want to travel?")
-        break; 
-      } 
-      default: { 
-        //statements; 
-        break; 
-      } 
-   } */ 
   }
 
   sendMessage() {
@@ -109,29 +71,16 @@ export class ChatbotComponent implements OnInit {
         let default_msg = response['body']['default_msg']
 
         this.flights = all_flights;
-        console.log(all_flights)
-
-
-
 
         botMsg = {body : default_msg, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
         this.carousel_flag = true
-
-        console.log("flights")
-        console.log(this.flights[0].airline);
 
       } else {
         let body = response['body']
         botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
       }
 
-      console.log(botMsg)
-
-
       this.conversations.push(botMsg);
-
-      //console.log(botMsg)
-      console.log(botMsg.tag)
 
       // reset do input
       this.message = "";
@@ -140,28 +89,27 @@ export class ChatbotComponent implements OnInit {
 
   }
 
-  showMore() {
-    this.paginationLimit = Number(this.paginationLimit) + 3;
-  }
-  
-  showLess() {
-    this.paginationLimit = Number(this.paginationLimit) - 3;
-  }
 
   getLocation() {
     this.locationService.getPosition().then(pos=> {
          this.lat = pos.lat
          this.lng = pos.lng
+         this.coords = {'latitude':this.lat,'longitude':this.lng}
          console.log(`Position: ${this.lat} ${this.lng}`);
     });
+  }
 
-/*     // 
-    this.chatbotService.getAirports().subscribe((coords) => {
-      this.coords = coords;
-    }) */
+  getNearbyAirport () {
+    this.locationService.getNearestAirport(this.coords).subscribe((response) => {
 
-    console.log(this.coords)
-    
+      let userMsg : Message = {body : 'Get nearest airport from my current location', is_me : true, username : ''+localStorage.getItem('username'), tag : "normal"}
+      this.conversations.push(userMsg)
+
+      let botMsg : Message = {body : 'The nearest airport from you is ' + response, is_me : false, username : ''+localStorage.getItem('username'), tag : "normal"}
+      this.conversations.push(botMsg)
+      console.log(response)
+    }) 
+  
   }
 
 

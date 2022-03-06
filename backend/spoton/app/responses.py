@@ -94,7 +94,11 @@ def showflights(tag,keys):
                                                     "price" :       str(pricingdic[nf])
                                                 })
                     )
-            response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
+
+            if not all_flights:
+                response = {"tag":"normal", "body": "No flights found" }
+            else:
+                response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
 
       
     else:
@@ -164,10 +168,10 @@ def generate_response(message, username):
         elif tag == "greeting":
             response = get_response(tag)
 
-        elif tag == "goodbye":#???
+        elif tag == "goodbye":
             
             if feedback:
-                response = "Before leaving can you please rate the service by sending a number between 0-10"
+                response = "Before leaving, can you please rate the service by sending a number between 0-10"
             else :
                 response= get_response(tag)
 

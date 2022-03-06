@@ -119,7 +119,7 @@ input {
     padding: 5px 10px;
     background: #f0f0f0;
     border: 1px solid #f0f0f0;
-    margin: 5px 0 0 50px;
+    margin: 5px 0 0 15px;
     color: #444;
 }
 .direct-chat-text:after, .direct-chat-text:before {
