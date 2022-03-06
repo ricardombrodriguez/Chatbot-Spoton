@@ -4,36 +4,31 @@
        <div class="receipts">
           <div class="receipt">
              <div class="airline">
-                <h3 style="width: auto;">Qatar Airlines</h3>
+                <h3 style="width: auto;">{{flight.airline}}</h3>
              </div>
              <div class="route">
-                <h2>{{flight.dep_airport}}</h2>
+                <h5>{{flight.dep_airport}}</h5>
                 <svg class="plane-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 510">
                    <path fill="#3f32e5" d="M497.25 357v-51l-204-127.5V38.25C293.25 17.85 275.4 0 255 0s-38.25 17.85-38.25 38.25V178.5L12.75 306v51l204-63.75V433.5l-51 38.25V510L255 484.5l89.25 25.5v-38.25l-51-38.25V293.25l204 63.75z"/>
                 </svg>
-                <h2>{{flight.arr_airport}}</h2>
+                <h5 >{{flight.arr_airport}}</h5>
              </div>
              <div class="details">
                 <div class="item">
                    <span>Flight No.</span>
-                   <h3>{{flight.flight_number}}</h3>
+                   <h6>{{flight.flight_number}}</h6>
                 </div>
-                <div class="item">
-                  <span>Airline</span>
-                  <h3>{{flight.airline}}</h3>
-               </div>
                 <div class="item">
                    <span>Departure</span>
-                   <h3>{{flight.departure}}</h3>
+                   <h6>{{flight.departure  |  date:'dd/MM/yyyy hh:mm' }}</h6>
                 </div>
-                <div class="item">
-                   <span>Price</span>
-                   <h3>{{flight.price}}</h3>
-                </div>
-                <!-- <div class="item">
-                   <span>Seat</span>
-                   <h3>69P</h3>
-                </div> -->
+                <div style = "display:flex">
+                  <div class="item">
+                     <span>Price</span>
+                     <h6>{{flight.price}}€</h6>
+                  </div>
+                  <button type="button" class="btn btn-primary" style="margin-left:60%"> Booking </button>
+               </div>
              </div>
           </div>
        </div>

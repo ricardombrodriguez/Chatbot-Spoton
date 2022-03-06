@@ -1,7 +1,7 @@
 from enum import unique
 import json
 from urllib import response
-import request
+# 6import request
 import random
 from django import views
 from app import views
@@ -69,24 +69,17 @@ def showflights(tag,keys):
                 print(uniqueid)
                 if uniqueid not in pricingdic:
                     pricingdic[uniqueid]= random.randint(50,250)
-                pricetuple.append((uniqueid,pricingdic[uniqueid]))
-                flightwithunique.append((uniqueid,f))
-                sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
-
-                    if date is not None and date not in f['departure']['scheduled']:
-                        continue
-
-                    if airline is not None and airline not in f['airline']['name']:
-                        continue
-
-                    price = random.randint(50,250)
-                    pricingdic[uniqueid]= price
                     pricetuple.append((uniqueid,pricingdic[uniqueid]))
                     flightwithunique.append((uniqueid,f))
-
                     sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
-                    if ascendent_order == False:
-                        sorted_by_second = sorted_by_second.reverse()
+                    
+                if date is not None and date not in f['departure']['scheduled']:
+                    continue
+                if airline is not None and airline not in f['airline']['name']:
+                    continue
+                
+                if ascendent_order == False:
+                    sorted_by_second = sorted_by_second.reverse()
 
 
 
@@ -104,11 +97,13 @@ def showflights(tag,keys):
                                                     "price" :       str(pricingdic[nf])
                                                 })
                     )
+
+            if len(all_flights) > 10: all_flights = all_flights[:10]
             response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
                 
       
     else:
-        response = {"tag":tag,"body":"Sorry there are no offers available now."}
+        response = {"tag":tag,"body": {"flights":[], "default_msg":  "There are no current offers for the selected destinations :("} }
 
     return response
 
@@ -211,7 +206,7 @@ def generate_response(message, username):
 
 
         elif tag == "showflights":
-
+            
             #devolve um array pos 0 msg de texto pos 1 msg de 
             msg= message.split(' ')
             keys = NLP.findkeys(msg)
