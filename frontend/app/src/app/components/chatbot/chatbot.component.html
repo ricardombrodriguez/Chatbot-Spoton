@@ -5,11 +5,11 @@
 
             <div class="box box-success direct-chat direct-chat-success">
 
-                <div class="box-body" style = "height: 540px;">
+                <div class="box-body" style = "height: 540px; ">
                     <!-- Conversations are loaded here -->
-                    <div class="direct-chat-messages" >
+                    <div class="direct-chat-messages">
 
-                        <ng-container *ngFor="let chat of conversations">
+                        <ng-container *ngFor="let chat of conversations; let i = index; first as isFirst; last as isLast">
                            
                             <!-- Bot message -->
                             <div class="direct-chat-msg" *ngIf="chat?.is_me == false">
@@ -22,97 +22,39 @@
                                     <div class="direct-chat-text" style="display: flex; justify-content: space-between; float: left; background-color: rgb(232, 232, 236);">
                                     
                                     {{chat?.body}}
-                                    
-                                    <!-- <div style="margin-left:0%;width: 90%;" >
-                                        
-                                    
-                                    <ngb-carousel *ngIf="carousel_flag" >
-                                        <ng-template ngbSlide *ngFor="let flight of flights" >
-                                            <div class="ticket" style="display:flex; ">
-                                                
-                                                <app-ticket [flight]="flight" class="himself"></app-ticket>
 
-                                            </div>
-                                        </ng-template>
-                    
-                                    </ngb-carousel>
-                                    </div>  -->
-                                    <!-- CHECK IF BOT ANSWER CONTAINS MORE THAN 1 MESSAGE -->
-                                    <div *ngIf="(chat?.body?.answer)?.length > 1; else default_or_dialogflow_message ">
-
-                                    
-
-                                        <!-- DISPLAY SHOW MORE SHOW LESS BUTTONS IF MORE RESULTS ARE RETURNED -->
-                                        <button class="btn-sm btn-default" style="border-radius: 12px; margin-right:5px;" *ngIf=" paginationLimit < (chat.body.answer).length" (click)="showMore()">
-                                            Show More
-                                        </button>
-                                        <button class="btn-sm btn-default" style="border-radius: 12px;" *ngIf="paginationLimit > 3" (click)="showLess()">
-                                            Show Less
-                                        </button>
-
-                                    </div>
-
-                                    <!-- CHECK IF BOT ANSWER CONTAINS ONE MESSAGE DISPLAY (WELCOME, ERROR OR DIALOGFLOW MESSAGE) -->
-                                    <ng-template #default_or_dialogflow_message>
-
-                                        <!-- DISPLAY WELCOME MESSAGE AT RENDER PAGE -->
-                                        {{ chat.body?.answer }}
-
-                                        <div *ngFor="let result of chat?.body?.answer" [ngSwitch]="result._type">
-
-                                            <!-- CHECK IF BOT RETURN RESULT FOUND IN 'restaurant' INDEX -->
-                                            <div class="clearfix" *ngSwitchCase="'rest'">
-                                                <span><a href="{{ result?.website }}">{{ result?.name }}</a></span><br>
-                                                <span class="glyphicon glyphicon-star-empty">{{ result?.rating }}</span><br>
-                                                <span>Address: {{ result?.address }} </span><br>
-                                                <span>Food Type: </span><br>
-                                                <p *ngFor="let c of result?.cuisine" style="float:left; margin-left:5px;">
-                                                    <small class="label label-success">{{ c }}</small>
-                                                </p><br><br>
-                                            </div>
-
-                                            <!-- CHECK IF BOT RETURN ERROR MESSAGE OR NOT FOUND -->
-                                            <div class="clearfix" *ngSwitchCase="'error'">
-                                                    <span>{{ result?.message }}</span>
-                                            </div>
-
-                                            <!-- CHECK IF BOT RETURN DIALOGFLOW MESSAGE -->
-                                            <div class="clearfix" *ngSwitchCase="'dialog'">
-                                                <span>{{ result?.message }}</span>
-                                            </div>
-
-                                        </div>
-
-                                    </ng-template>
+        
 
                                 </div>
                             </div>
 
-                            <div style="margin-left:5%;width: 90%;" >
-                                        
-                                    
-                                <ngb-carousel *ngIf="carousel_flag" >
-                                    <ng-template ngbSlide *ngFor="let flight of flights" >
-                                        <div class="ticket" style="display:flex; ">
-                                            
-                                            <app-ticket [flight]="flight" class="himself"></app-ticket>
-
-                                        </div>
-                                    </ng-template>
-                
-                                </ngb-carousel>
-                            </div>
-
+                        
                             <!-- My messages -->
                             <div class="direct-chat-msg right" *ngIf="chat?.is_me">
                                 <img class="direct-chat-img" src="../../../assets/me.jpg"
                                     alt="Message User Image">
                                 <div class="direct-chat-text" style=" display: flex; justify-content: space-between; float: right;">
                                     {{chat?.body}}
+
+                                    
                                 </div>
                             </div>
 
                         </ng-container>
+                        <div style="margin-left:5%; width: 90%;" >
+                                        
+                                    
+                            <ngb-carousel *ngIf="carousel_flag">
+                                <ng-template ngbSlide *ngFor="let flight of flights" >
+                                    <div class="ticket" style="display:flex; ">
+                                        
+                                        <app-ticket [flight]="flight" class="himself"></app-ticket>
+
+                                    </div>
+                                </ng-template>
+            
+                            </ngb-carousel>
+                        </div>
 
                     </div>
 

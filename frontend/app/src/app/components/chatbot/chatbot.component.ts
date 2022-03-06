@@ -16,7 +16,8 @@ export class ChatbotComponent implements OnInit {
   @Input() message!: string;
   conversations : Message[] = [];
   bookings : Booking[] = [];
-  flights : Flight[] = []; 
+  flights : Flight[] = [];
+  current_flight: Flight[] = [];
 
   startPage!: number;
   paginationLimit!: number;
@@ -25,6 +26,7 @@ export class ChatbotComponent implements OnInit {
   public lng:any;
   public coords:any;
   public carousel_flag: boolean = false;
+  public last: number = 0;
 
   constructor(private chatbotService : ChatbotService, private userService : UserService, private locationService: LocationService) { }
 
@@ -107,6 +109,9 @@ export class ChatbotComponent implements OnInit {
             }
             this.flights.push(new_f)
           }
+
+          this.current_flight = all_flights;
+
           console.log("flights")
           console.log(this.flights);
         }
@@ -120,6 +125,7 @@ export class ChatbotComponent implements OnInit {
 
 
       this.conversations.push(botMsg);
+      this.last = this.last + 1 
 
       //console.log(botMsg)
       console.log(botMsg.tag)
