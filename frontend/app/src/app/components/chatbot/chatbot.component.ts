@@ -25,6 +25,7 @@ export class ChatbotComponent implements OnInit {
   public lng:any;
   public coords:any;
   public carousel_flag: boolean = false;
+  public rating_flag: boolean=false;
 
   constructor(private chatbotService : ChatbotService, private userService : UserService, private locationService: LocationService) { }
 
@@ -60,17 +61,22 @@ export class ChatbotComponent implements OnInit {
       //response is a dictionary
       let a_tag = response['tag']
       this.carousel_flag = false
+      this.rating_flag =false
 
       //adicionar mensagem do user à lista de mensagens da conversation
       console.log("AQUI "+ response)
-      let botMsg: Message
+      let botMsg!: Message
+      if (a_tag == "book"){
 
-      if (a_tag == "showflights") {
+      }
+      else if (a_tag == "showflights") {
 
         let all_flights = response['body']['flights']
         let default_msg = response['body']['default_msg']
 
         this.flights = all_flights;
+
+        console.log(this.flights)
 
         botMsg = {body : default_msg, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
         this.carousel_flag = true

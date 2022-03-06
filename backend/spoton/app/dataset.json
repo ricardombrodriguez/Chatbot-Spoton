@@ -10,11 +10,15 @@
     "responses":["Goodbye and thank you for your preference" ]
     },
 
-    
+     {
+    "tag":"ratings",
+    "patterns":["ratings"],
+    "responses":["Please rate our performance" ]
+    },
     
     {
     "tag":"feedback",
-    "patterns":["0","1","2","3","4","5","6","7","8","9","10"],
+    "patterns":["0","1","2","3","4","5"],
     "responses":["Thank you so much for your valuable feedback. We appreciate your positive feedback! ", "Thank you so much for your valuable feedback. We deeply regret the inconvenience and hope to do better the next time! " ]
     },
     {"tag": "human_request",
@@ -44,8 +48,8 @@
     
     {  
     "tag":"book",
-    "patterns":["Book", "book flight", "Book this flight", "Book it"],
-    "responses":["The selected flight was booked"]
+    "patterns":["Book the flight"],
+    "responses":["The selected flight was booked! Please Rate your experience"]
 
     },
 
@@ -66,7 +70,7 @@
     
     },
     {"tag":"funcionalities",
-    "patterns":["What can you do?", "What are your functions?", "What are your functionalities?", "What do you do?"],
+    "patterns":["help"],
     "responses":["I can help you find and book flights from your location, as well as provide some details about each flight, besides that i can also connect you to an human agent"]
     }
 

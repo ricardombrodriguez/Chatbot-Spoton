@@ -67,6 +67,7 @@
           .plane-icon {
             width: 30px;
             height: 30px;
+            margin-right: 12%;
             transform: rotate(90deg);
           }
           h2 {

@@ -1,7 +1,7 @@
 from enum import unique
 import json
 from urllib import response
-import request
+# 6import request
 import random
 from django import views
 from app import views
@@ -51,6 +51,7 @@ def showflights(tag,keys):
     if "airline" in keys:
         airline = keys[keys.index("airline") + 1]
 
+    print(rcv)
     flights= rcv["data"]
     all_flights=[]
 
@@ -95,14 +96,12 @@ def showflights(tag,keys):
                                                 })
                     )
 
-            if not all_flights:
-                response = {"tag":"normal", "body": "No flights found" }
-            else:
-                response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
-
-      
-    else:
-        response = {"tag":tag,"body":"Sorry there are no offers available now."}
+        if not all_flights:
+            response = {"tag":tag,"body": {"flights":[], "default_msg":  "There are no current offers for the selected destinations :("} }
+        else:
+            if len(all_flights) > 10:
+                all_flights = all_flights[:10]
+            response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
 
     return response
 
@@ -113,8 +112,9 @@ def location(tag):
     return response
 
 
-def book():
-    return ""
+def book(tag):
+    response =get_response(tag)
+    return default_message_builder(tag, response)
 
     """global seat_count
     seat_count = seat_count - 1
@@ -158,11 +158,7 @@ def generate_response(message, username):
     
     if tag != "":
         if tag == "book":
-            gen=0
-            if gen > 0:
-                response = "Your flight has been booked successfully. Please show this Booking ID at the counter: "  
-            else:
-                response = "Sorry we are sold out now!"
+            response= book(tag)
 
 
         elif tag == "greeting":
@@ -184,17 +180,17 @@ def generate_response(message, username):
 
             rating = int(message)
 
-            if rating >= 6 and rating <= 10:
+            if rating >= 4 and rating <= 5:
                 print("positive")
                 feedback = True
                 response = responses[0]
 
-            elif rating > 0 and rating < 6:
+            elif rating > 0 and rating < 4:
                 feedback = True
                 response = responses[1]
 
             else:
-                response = "Invalid type of feedback. Please review me from 1-10."
+                response = "Invalid type of feedback. Please review me from 1-5."
                 feedback = False
 
             # save feedback to analyse the overall performance of the bot
@@ -205,7 +201,7 @@ def generate_response(message, username):
 
 
         elif tag == "showflights":
-
+            
             #devolve um array pos 0 msg de texto pos 1 msg de 
             msg= message.split(' ')
             keys = NLP.findkeys(msg)
@@ -217,7 +213,8 @@ def generate_response(message, username):
 
         elif tag == "location":
             response = location(tag)
-
+        elif tag== "ratings":
+            response=funcionalities(tag)
         elif tag == "human_request":
 
             # save help so that humans can read who is asking for help

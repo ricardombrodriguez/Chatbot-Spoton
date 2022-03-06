@@ -1,11 +1,11 @@
-<div class="row">
+<div class="row" >
 
-    <div class="col-md-12">
+    <div class="col-md-12 text-center container" style="top: 10px">
         <div class="panel panel-default">
 
             <div class="box box-success direct-chat direct-chat-success">
 
-                <div class="box-body" >
+                <div class="box-body" style = "height: 540px;">
                     <!-- Conversations are loaded here -->
                     <div class="direct-chat-messages" >
 
@@ -14,28 +14,31 @@
                             <!-- Bot message -->
                             <div class="direct-chat-msg" *ngIf="chat?.is_me == false">
                                 <div class="direct-chat-info clearfix">
-                                    <span class="direct-chat-name pull-left"> SpotonBot</span>
+                                    <span class="direct-chat-name pull-left" style="float: left"> SpotonBot</span>
                                 </div>
                                 <img class="direct-chat-img" src="../../../assets/bot.png"
                                     alt="Message User Image"><!-- /.direct-chat-img -->
 
-                                <div class="direct-chat-text" style="display: flex; justify-content: space-between; float: left; background-color: rgb(232, 232, 236);">
-                                    <div style="margin: 0 0 20 0">
-                                    {{chat?.body}}
-                                    </div>
+                                    <div class="direct-chat-text" style="display: flex; justify-content: space-between; float: left; background-color: rgb(232, 232, 236);">
                                     
-                                    <ngb-carousel *ngIf="carousel_flag">
-                                        <ng-template ngbSlide *ngFor="let flight of flights" >
-                                            <div class="ticket" style="display:flex">
-                                                
-                                                <app-ticket [flight]="flight" class="himself"></app-ticket>
-                                                <!-- <app-ticket [flight]="flight" class="himself"></app-ticket> -->
-                                            </div>
-                                        </ng-template>
-                    
-                                    </ngb-carousel>
-
+                                    {{chat?.body}}
+                                    
                                 </div>
+                            </div>
+
+                            <div style="margin-left:5%;width: 90%;" >
+                                        
+                                    
+                                <ngb-carousel *ngIf="carousel_flag" >
+                                    <ng-template ngbSlide *ngFor="let flight of flights" >
+                                        <div class="ticket" style="display:flex; ">
+                                            
+                                            <app-ticket [flight]="flight" class="himself"></app-ticket>
+
+                                        </div>
+                                    </ng-template>
+                
+                                </ngb-carousel>
                             </div>
 
                             <!-- My messages -->
@@ -53,10 +56,9 @@
 
                 </div>
 
-                <div>
-                    <button type="button" class="btn btn-success"  (click)="getNearbyAirport()"> Get nearby airport </button>
-                </div> 
-
+               <div>
+                    <button type="button" class="btn btn-success"  (click)="getNearbyAirport()"> Send my location </button>
+                </div>
 
                 <div class="box-footer">
                     <div class="input-group">
