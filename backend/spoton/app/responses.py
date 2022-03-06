@@ -9,10 +9,7 @@ from app import NLP
 from app import classify
 from app.models import Help, Feedback
 
-sorted_by_second = []
-flightwithunique = []
-pricingdic={}
-pricetuple=[]
+
 seat_count = 50
 feedback= False
 
@@ -54,7 +51,10 @@ def showflights(tag,keys):
     print(rcv)
     flights= rcv["data"]
     all_flights=[]
-
+    sorted_by_second = []
+    flightwithunique = []
+    pricingdic={}
+    pricetuple=[]
     if len(flights)>0:
         text= get_response(tag)
         for f in flights:
@@ -62,12 +62,10 @@ def showflights(tag,keys):
             if f["flight"]["iata"]:
                 uniqueid= f["flight"]["iata"]+f["departure"]["scheduled"]
                 print(uniqueid)
-                if uniqueid not in pricingdic:
-                    pricingdic[uniqueid]= random.randint(50,250)
-
-                    pricetuple.append((uniqueid,pricingdic[uniqueid]))
-                    flightwithunique.append((uniqueid,f))
-                    sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
+                pricingdic[uniqueid]= random.randint(50,250)
+                pricetuple.append((uniqueid,pricingdic[uniqueid]))
+                flightwithunique.append((uniqueid,f))
+                    
 
             sorted_by_second = sorted(pricetuple, key=lambda tup: tup[1])
 
@@ -96,9 +94,6 @@ def showflights(tag,keys):
                                                 })
                     )
 
-        if len(all_flights) > 10: 
-            all_flights = all_flights[:10]
-        
         response = {"tag":tag, "body": {"flights":all_flights, "default_msg":  text} }
 
       
@@ -115,7 +110,7 @@ def location(tag):
 
 
 def book():
-    return "Flight was booked!Please pay at counter!"
+    return "Flight was booked! Please pay at counter!"
 
     """global seat_count
     seat_count = seat_count - 1
@@ -181,12 +176,12 @@ def generate_response(message, username):
 
             rating = int(message)
 
-            if rating >= 6 and rating <= 10:
+            if rating >= 3 and rating <= 5:
                 print("positive")
                 feedback = True
                 response = responses[0]
 
-            elif rating > 0 and rating < 6:
+            elif rating > 0 and rating < 3:
                 feedback = True
                 response = responses[1]
 
@@ -212,6 +207,8 @@ def generate_response(message, username):
                 response = showflights(tag,keys)
                 return json.dumps(response)
 
+        elif tag == "ratings":
+            response = funcionalities(tag)
         elif tag == "location":
             response = location(tag)
 
