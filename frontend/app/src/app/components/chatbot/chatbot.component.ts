@@ -51,8 +51,46 @@ export class ChatbotComponent implements OnInit {
     })
 
   }
+  getLocation() {
+    this.locationService.getPosition().then(pos=> {
+         this.lat = pos.lat
+         this.lng = pos.lng
+         this.coords = {'latitude':this.lat,'longitude':this.lng}
+         console.log(`Position: ${this.lat} ${this.lng}`);
+    });
+  }
+
+  getNearbyAirport () {
+    this.locationService.getNearestAirport(this.coords).subscribe((response) => {
+
+      let userMsg : Message = {body : 'Get nearest airport from my current location', is_me : true, username : ''+localStorage.getItem('username'), tag : "normal"}
+      this.conversations.push(userMsg)
+
+      let botMsg : Message = {body : 'The nearest airport from you is ' + response, is_me : false, username : ''+localStorage.getItem('username'), tag : "normal"}
+      this.conversations.push(botMsg)
+      console.log(response)
+    }) }
+  
+  sendAutomaticMessage(bttn_id : number) {
+    /* switch(bttn_id) { 
+      case 1: { 
+        this.sendMessage("No flights right now :/")
+        break; 
+      } 
+      case 2: { 
+        this.sendMessage("Where you want to travel?")
+        break; 
+      } 
+      default: { 
+        //statements; 
+        break; 
+      } 
+   } */ 
+  }
 
   sendMessage() {
+
+    this.flights = []
 
     console.log("send message: " + this.message)
 
@@ -101,7 +139,13 @@ export class ChatbotComponent implements OnInit {
           console.log(this.flights);
         }
 
-      } else if(a_tag == "feedback"){
+      } else if(a_tag == "book"){
+        let body = response['body']
+ 
+        this.ratings_flag = true
+        botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
+
+      }else if(a_tag == "feedback"){
         let body = response['body']
 
         this.fb_flag = true
@@ -123,29 +167,5 @@ export class ChatbotComponent implements OnInit {
     })
 
   }
-
-
-  getLocation() {
-    this.locationService.getPosition().then(pos=> {
-         this.lat = pos.lat
-         this.lng = pos.lng
-         this.coords = {'latitude':this.lat,'longitude':this.lng}
-         console.log(`Position: ${this.lat} ${this.lng}`);
-    });
-  }
-
-  getNearbyAirport () {
-    this.locationService.getNearestAirport(this.coords).subscribe((response) => {
-
-      let userMsg : Message = {body : 'Get nearest airport from my current location', is_me : true, username : ''+localStorage.getItem('username'), tag : "normal"}
-      this.conversations.push(userMsg)
-
-      let botMsg : Message = {body : 'The nearest airport from you is ' + response, is_me : false, username : ''+localStorage.getItem('username'), tag : "normal"}
-      this.conversations.push(botMsg)
-      console.log(response)
-    }) 
-  
-  }
-
-
 }
+

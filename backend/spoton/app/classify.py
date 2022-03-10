@@ -9,7 +9,7 @@ This class is used to classify an intent, so that we can categorize the user inp
 """
 
 data_embedder.initialize()
-dataset = codecs.open('app/embedded_data.json', 'r', encoding='utf-8').read()
+dataset = codecs.open('embedded_data.json', 'r', encoding='utf-8').read()
 data = json.loads(dataset)
 
 ft_model = data_embedder.load_embedding_model()

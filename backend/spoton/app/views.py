@@ -95,7 +95,6 @@ def get_nearest_airport(request):
 
     return Response(nearest_aiport)
 
-
 # ########################## OBTER UM DICIONÁRIO COM AS COORDENADAS GEOGRÁFICAS DOS AEROPORTOS ################################
 def get_airports():
     # get all airports on only one page
