@@ -102,3 +102,7 @@ def classify(input):
     input_vector = data_embedder.embed_sentence(normalized_input, ft_model) # embed input sentence to form sentence vector
     intent_tag = detect_intent(data, input_vector)  # detect intent according to the input vector (using cosine similarity as described above)
     return intent_tag
+
+
+if __name__ == '__main__':
+    data_embedder.initialize()

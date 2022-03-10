@@ -72,10 +72,7 @@ export class ChatbotComponent implements OnInit {
       //adicionar mensagem do user à lista de mensagens da conversation
       console.log("AQUI "+ response)
       let botMsg!: Message
-      if (a_tag == "book"){
-
-      }
-      else if (a_tag == "showflights") {
+      if (a_tag == "showflights") {
 
         let all_flights = response['body']['flights']
         let default_msg = response['body']['default_msg']
@@ -104,24 +101,20 @@ export class ChatbotComponent implements OnInit {
           console.log(this.flights);
         }
 
-      } else if(a_tag == "book"){
-        let body = response['body']
-
-        this.ratings_flag = true
-        botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
-
-      }else if(a_tag == "feedback"){
+      } else if(a_tag == "feedback"){
         let body = response['body']
 
         this.fb_flag = true
         botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
 
-      }else{
+      } else {
         let body = response['body']
         botMsg =  {body : body, is_me : false, username : ''+localStorage.getItem('username'), tag : a_tag}
       }
 
       this.conversations.push(botMsg);
+      console.log("conversations")
+      console.log(this.conversations)
       this.last = this.last + 1 
 
       // reset do input

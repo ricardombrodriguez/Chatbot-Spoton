@@ -127,7 +127,7 @@ def default_message_builder(tag, resp):
     return build_json
     
 def funcionalities(tag):
-    response =get_response(tag)
+    response = get_response(tag)
     return default_message_builder(tag,response)
 def show_menu(tag):
     

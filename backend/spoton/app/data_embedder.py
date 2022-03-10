@@ -47,3 +47,7 @@ def initialize():
     ft_model = load_embedding_model()
     embedded_data = parse_data(ft_model) 
     write_embedded_data(embedded_data)
+
+
+if __name__ == '__main__':
+    initialize()

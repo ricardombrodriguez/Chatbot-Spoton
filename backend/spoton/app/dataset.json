@@ -10,7 +10,6 @@
     "responses":["Goodbye and thank you for your preference" ]
     },
 
-    
     {
         "tag":"ratings",
         "patterns":["Rate"],
